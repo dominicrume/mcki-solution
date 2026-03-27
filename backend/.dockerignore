@@ -1,0 +1,10 @@
+# FastAPI — exclude everything not needed in the Docker build context
+.venv
+.venv312
+__pycache__
+*.pyc
+*.pyo
+.env
+.env.*
+*.log
+cloudbuild.yaml

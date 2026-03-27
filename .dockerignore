@@ -1,0 +1,13 @@
+# Next.js — exclude everything not needed in the Docker build context
+node_modules
+.next
+.git
+.gitignore
+*.md
+.env
+.env.*
+!.env.local.example
+backend
+supabase
+.vscode
+*.log

@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+/* ── Page transition ─────────────────────────────────────────────────────── */
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply bg-white text-brand-text font-body antialiased;
+    animation: pageEnter 0.4s ease-out both;
+  }
+
+  h1, h2, h3, h4, h5 { @apply font-heading; }
+
+  /* Smooth anchor scroll offset for sticky nav */
+  [id] { scroll-margin-top: 80px; }
+}
+
+@layer components {
+
+  /* ── Buttons ─────────────────────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl
+           font-semibold text-navy-500 bg-gold-300
+           hover:bg-gold-200 active:scale-95
+           transition-all duration-200 shadow-cta hover:shadow-lg;
+  }
+
+  .btn-navy {
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl
+           font-semibold text-white bg-navy-500
+           hover:bg-navy-600 active:scale-95
+           transition-all duration-200 shadow-card hover:shadow-card-hover;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl
+           font-semibold text-navy-500 bg-transparent border-2 border-navy-500
+           hover:bg-navy-500 hover:text-white active:scale-95
+           transition-all duration-200;
+  }
+
+  .btn-ghost-white {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
+           font-medium text-white border-2 border-white/40
+           hover:border-white hover:bg-white/10 active:scale-95
+           transition-all duration-200;
+  }
+
+  /* ── Cards ───────────────────────────────────────────────────────── */
+  .card {
+    @apply bg-white rounded-2xl border border-brand-border shadow-card
+           hover:shadow-card-hover transition-shadow duration-300;
+  }
+
+  .card-service {
+    @apply card p-8 flex flex-col gap-4
+           hover:-translate-y-1 transition-all duration-300;
+  }
+
+  .card-testimonial {
+    @apply card p-8 flex flex-col gap-5;
+  }
+
+  /* ── Section layout ──────────────────────────────────────────────── */
+  .section {
+    @apply py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto;
+  }
+
+  .section-full {
+    @apply py-20 px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-alt {
+    @apply bg-brand-alt;
+  }
+
+  .section-navy {
+    @apply bg-navy-gradient text-white;
+  }
+
+  /* ── Typography helpers ──────────────────────────────────────────── */
+  .section-label {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase
+           tracking-widest text-gold-300 mb-3;
+  }
+
+  .section-heading {
+    @apply font-heading font-bold text-navy-500 leading-tight;
+  }
+
+  .section-subheading {
+    @apply text-brand-muted text-lg leading-relaxed max-w-2xl;
+  }
+
+  .answer-capsule {
+    @apply text-brand-muted text-base leading-relaxed max-w-2xl;
+  }
+
+  /* ── Gold accent divider ─────────────────────────────────────────── */
+  .gold-bar {
+    @apply w-12 h-1 rounded-full bg-gold-300;
+  }
+
+  /* ── Badge ───────────────────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs
+           font-semibold tracking-wide uppercase;
+  }
+  .badge-gold    { @apply badge bg-gold-100 text-gold-500; }
+  .badge-navy    { @apply badge bg-navy-100 text-navy-500; }
+  .badge-green   { @apply badge bg-emerald-50 text-emerald-700; }
+
+  /* ── Form inputs ─────────────────────────────────────────────────── */
+  .input {
+    @apply w-full rounded-xl border border-brand-border bg-white px-4 py-3
+           text-brand-text placeholder:text-brand-muted
+           focus:outline-none focus:ring-2 focus:ring-navy-400
+           focus:border-transparent transition;
+  }
+
+  .select {
+    @apply input appearance-none cursor-pointer;
+  }
+
+  /* ── Stat box ────────────────────────────────────────────────────── */
+  .stat-box {
+    @apply flex flex-col items-center gap-1 text-center;
+  }
+
+  /* ── Dot grid overlay (hero / CTA sections) ─────────────────────── */
+  .dot-grid {
+    background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0);
+    background-size: 32px 32px;
+  }
+
+  .dot-grid-sm {
+    background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0);
+    background-size: 28px 28px;
+  }
+
+  /* ── University partner pill ─────────────────────────────────────── */
+  .partner-pill {
+    @apply px-5 py-2.5 rounded-xl border border-brand-border bg-white
+           text-sm font-medium text-brand-muted
+           hover:border-navy-300 hover:text-navy-500
+           transition-colors duration-200 whitespace-nowrap;
+  }
+}

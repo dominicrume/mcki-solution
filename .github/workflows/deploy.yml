@@ -1,0 +1,56 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-backend:
+    name: Deploy FastAPI Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy Backend
+        run: |
+          gcloud run deploy mcki-ai-navigator \
+            --source ./backend \
+            --region europe-west2 \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 8080 \
+            --memory 512Mi \
+            --project ${{ secrets.GCP_PROJECT_ID }} \
+            --quiet
+
+  deploy-frontend:
+    name: Deploy Next.js Frontend
+    runs-on: ubuntu-latest
+    needs: deploy-backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy Frontend
+        run: |
+          gcloud run deploy mcki-frontend \
+            --source . \
+            --region europe-west2 \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 3000 \
+            --memory 1Gi \
+            --set-env-vars "NEXT_PUBLIC_API_URL=https://mcki-ai-navigator-1090728564162.europe-west2.run.app" \
+            --project ${{ secrets.GCP_PROJECT_ID }} \
+            --quiet

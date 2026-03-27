@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# Python
+backend/__pycache__/
+backend/venv/
+backend/.venv/
+**/*.pyc
+
+# OS
+.DS_Store
+*.pem
+
+# Google Cloud / deploy cache
+.gcloud/
