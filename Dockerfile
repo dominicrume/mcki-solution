@@ -14,9 +14,7 @@ WORKDIR /app
 
 # Copy only the lockfile + manifest first (maximises layer cache)
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production --ignore-scripts \
- && npm ci --ignore-scripts
-# Two-pass: prod deps first, then dev deps for the build step
+RUN npm ci --ignore-scripts
 
 # ── Stage 2: Build ────────────────────────────────────────────────────────────
 FROM node:20-alpine AS builder
