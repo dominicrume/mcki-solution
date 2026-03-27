@@ -111,7 +111,7 @@ export function AINavigator({ mode }: { mode: Mode }) {
   const progressStep = Math.min(step, STEP_LABELS.length - 1);
 
   return (
-    <div className="card overflow-hidden">
+    <div className="card overflow-hidden flex flex-col h-[600px]">
       {/* ── Header ── */}
       <div className="bg-sapphire-500 px-5 py-4 flex items-center gap-3">
         <div className="w-9 h-9 rounded-full bg-gold-300 flex items-center justify-center flex-shrink-0">
@@ -158,7 +158,7 @@ export function AINavigator({ mode }: { mode: Mode }) {
       </div>
 
       {/* ── Messages ── */}
-      <div ref={messagesContainerRef} className="h-96 overflow-y-auto p-4 space-y-4 bg-slate-50">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
         {messages.map((msg, i) => (
           <div
             key={i}
