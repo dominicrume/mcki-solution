@@ -272,7 +272,7 @@ async function sendEmail({
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      from: "MCKI Solutions <noreply@mckisolutions.com>",
+      from: "MCKI Solutions <info@mckisolutions.com>",
       to: Array.isArray(to) ? to : [to],
       subject,
       html,
