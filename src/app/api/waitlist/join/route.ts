@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { generateReferralCode } from "@/lib/utils";
+import { sendWaitlistConfirmation, sendWaitlistCRM } from "@/lib/email";
 
-// Detect whether Supabase is actually configured
 function isSupabaseConfigured(): boolean {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
@@ -43,7 +43,6 @@ export async function POST(req: Request) {
         const { createServiceClient } = await import("@/lib/supabase");
         const supabase = createServiceClient();
 
-        // Check duplicate
         const { data: existing } = await supabase
           .from("waitlist")
           .select("id, referral_code, queue_position")
@@ -82,38 +81,34 @@ export async function POST(req: Request) {
           });
         }
 
-        void notifyCRM({ email, phone, trading_experience, referral_code: referralCode, queue_position: queuePosition });
+        void sendWaitlistConfirmation({ email, referralCode, queuePosition });
+        void sendWaitlistCRM({ email, phone, tradingExperience: trading_experience, referralCode, queuePosition });
 
         return NextResponse.json(
           {
             referral_code: referralCode,
             queue_position: queuePosition,
-            message: `You're #${queuePosition} on the waitlist! Share your referral link to move up.`,
+            message: `You're #${queuePosition} on the waitlist! A confirmation has been sent to ${email}.`,
           },
           { status: 201 }
         );
       } catch (dbErr) {
         console.error("[Waitlist] Supabase error:", dbErr);
-        // Fall through to dev fallback rather than showing user an error
       }
     }
 
     // ── Path B: Dev / Supabase not configured — return mock success ─
     const mockPosition = Math.floor(Math.random() * 150) + 50;
-    console.log("[Waitlist DEV] Entry recorded locally:", {
-      email,
-      trading_experience,
-      referral_code: referralCode,
-      queue_position: mockPosition,
-    });
+    console.log("[Waitlist DEV] Entry:", { email, trading_experience, referral_code: referralCode, queue_position: mockPosition });
 
-    void notifyCRM({ email, phone, trading_experience, referral_code: referralCode, queue_position: mockPosition });
+    void sendWaitlistConfirmation({ email, referralCode, queuePosition: mockPosition });
+    void sendWaitlistCRM({ email, phone, tradingExperience: trading_experience, referralCode, queuePosition: mockPosition });
 
     return NextResponse.json(
       {
         referral_code: referralCode,
         queue_position: mockPosition,
-        message: `You're #${mockPosition} on the waitlist! Share your referral link to move up.`,
+        message: `You're #${mockPosition} on the waitlist! A confirmation has been sent to ${email}.`,
       },
       { status: 201 }
     );
@@ -121,19 +116,4 @@ export async function POST(req: Request) {
     console.error("[Waitlist] Unexpected error:", err);
     return NextResponse.json({ error: "Internal server error." }, { status: 500 });
   }
-}
-
-async function notifyCRM(data: {
-  email: string;
-  phone?: string;
-  trading_experience: string;
-  referral_code: string;
-  queue_position: number;
-}) {
-  // Replace with Resend / SendGrid / webhook in production
-  console.log("[CRM LEAD] New waitlist entry:", {
-    ...data,
-    notifyTo: ["Info@mckisolutions.com", "adammasum74@gmail.com"],
-    timestamp: new Date().toISOString(),
-  });
 }

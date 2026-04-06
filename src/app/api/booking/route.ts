@@ -1,8 +1,14 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { createServiceClient } from "@/lib/supabase";
 import { generateReferralCode } from "@/lib/utils";
+import { sendBookingConfirmation, sendBookingCRM } from "@/lib/email";
+
+function isSupabaseConfigured(): boolean {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+  return url.length > 0 && !url.includes("placeholder") && key.length > 0 && !key.includes("placeholder");
+}
 
 export async function POST(req: Request) {
   try {
@@ -17,47 +23,52 @@ export async function POST(req: Request) {
     }
 
     const reference = `MCKI-${generateReferralCode(6)}`;
-    const supabase = createServiceClient();
 
-    await supabase.from("bookings").insert({
-      reference,
+    if (isSupabaseConfigured()) {
+      try {
+        const { createServiceClient } = await import("@/lib/supabase");
+        const supabase = createServiceClient();
+        await supabase.from("bookings").insert({
+          reference,
+          name,
+          email: email.toLowerCase(),
+          phone,
+          service: service ?? "general",
+          preferred_date: preferred_date || null,
+          message: message || null,
+          status: "pending",
+        });
+      } catch (dbErr) {
+        console.warn("[Booking] Supabase insert skipped:", dbErr);
+      }
+    }
+
+    void sendBookingConfirmation({
       name,
-      email: email.toLowerCase(),
-      phone,
-      service: service ?? "general",
-      preferred_date: preferred_date || null,
-      message: message || null,
-      status: "pending",
+      email,
+      reference,
+      service: service ?? "General Consultation",
+      preferredDate: preferred_date,
     });
-
-    // Notify team (fire-and-forget)
-    void notifyTeam({ reference, name, email, phone, service, preferred_date });
+    void sendBookingCRM({
+      name,
+      email,
+      phone,
+      reference,
+      service: service ?? "General Consultation",
+      preferredDate: preferred_date,
+      message,
+    });
 
     return NextResponse.json(
       {
         reference,
-        message:
-          "Thank you! We'll confirm your consultation within 2 working hours.",
+        message: `Thank you, ${name}! We'll confirm your consultation within 2 working hours. A confirmation has been sent to ${email}.`,
       },
       { status: 201 }
     );
   } catch (err) {
-    console.error("Booking error:", err);
+    console.error("[Booking] Unexpected error:", err);
     return NextResponse.json({ error: "Internal server error." }, { status: 500 });
   }
-}
-
-async function notifyTeam(data: {
-  reference: string;
-  name: string;
-  email: string;
-  phone: string;
-  service: string;
-  preferred_date?: string;
-}) {
-  console.log("[CRM BOOKING] New consultation request:", {
-    ...data,
-    notifyTo: ["Info@mckisolutions.com", "adammasum74@gmail.com"],
-    timestamp: new Date().toISOString(),
-  });
 }
