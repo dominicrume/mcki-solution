@@ -75,7 +75,7 @@ export default function TradingLabPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="max-w-3xl">
             <span className="badge bg-gold-300/20 text-gold-300 border border-gold-300/30 mb-4">
-              Waitlist Now Open
+              🔥 Waitlist Now Open
             </span>
             <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight mb-5">
               Stop Guessing.
