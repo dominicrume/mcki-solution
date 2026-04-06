@@ -161,10 +161,11 @@ export function WaitlistForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1.5">
+        <label htmlFor="trading-experience" className="block text-sm font-medium text-slate-700 mb-1.5">
           Trading Experience Level <span className="text-red-500">*</span>
         </label>
         <select
+          id="trading-experience"
           value={experience}
           onChange={(e) => setExperience(e.target.value as ExperienceLevel)}
           className="select"

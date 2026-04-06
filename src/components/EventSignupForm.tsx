@@ -124,10 +124,11 @@ export function EventSignupForm({ eventName }: Props) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1.5">
+        <label htmlFor="ticket-type" className="block text-sm font-medium text-slate-700 mb-1.5">
           Ticket Type <span className="text-red-500">*</span>
         </label>
         <select
+          id="ticket-type"
           value={ticket}
           onChange={(e) => setTicket(e.target.value as TicketType)}
           className="select"
