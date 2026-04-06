@@ -139,3 +139,23 @@ ORDER BY referral_count DESC, queue_position ASC
 LIMIT 50;
 
 GRANT SELECT ON public.waitlist_leaderboard TO anon;
+
+-- ── Event Registrations ──────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS public.event_registrations (
+  id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name          TEXT NOT NULL,
+  email         TEXT NOT NULL,
+  phone         TEXT,
+  ticket_type   TEXT NOT NULL CHECK (ticket_type IN ('private_adult', 'private_teenager', 'agent_ai')),
+  event         TEXT NOT NULL,
+  registered_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (email, event)
+);
+
+ALTER TABLE public.event_registrations ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "service_role_all_event_registrations"
+  ON public.event_registrations
+  FOR ALL
+  TO service_role
+  USING (true);

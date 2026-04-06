@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { TrendingUp, Zap, BarChart2, Shield, ArrowRight, Lock } from "lucide-react";
+import { TrendingUp, Zap, BarChart2, Shield, ArrowRight, Lock, Calendar, Users, Bot } from "lucide-react";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { WaitlistLeaderboard } from "@/components/WaitlistLeaderboard";
+import { EventSignupForm } from "@/components/EventSignupForm";
 
 export const metadata: Metadata = {
   title: "Wealth Lab — AI Crypto & FX Trading Intelligence",
@@ -37,6 +38,30 @@ const tiers = [
   { position: "Top 100",   reward: "Founding Member — Free Early Access", color: "bg-gold-300 text-navy-500" },
   { position: "Top 500",   reward: "Early Bird — Priority Access",         color: "bg-navy-500 text-white" },
   { position: "Top 1,000", reward: "First Wave — Skip the Queue",          color: "bg-brand-alt text-navy-500 border border-brand-border" },
+];
+
+const pricingPlans = [
+  {
+    icon: Users,
+    label: "Private Adult",
+    price: "£600",
+    description: "Full access for adult learners. Includes live AI trading sessions, strategy workshops, and community access.",
+    highlight: false,
+  },
+  {
+    icon: Bot,
+    label: "Agent AI",
+    price: "£1,500",
+    description: "Our flagship tier. Everything in Private Adult plus one-on-one AI agent configuration, priority support, and lifetime updates.",
+    highlight: true,
+  },
+  {
+    icon: Users,
+    label: "Private Teenager",
+    price: "£250",
+    description: "Tailored for under-18s. Structured curriculum, parental dashboard, and mentorship from certified analysts.",
+    highlight: false,
+  },
 ];
 
 export default function TradingLabPage() {
@@ -111,6 +136,72 @@ export default function TradingLabPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── PRICING ── */}
+      <section className="section-full bg-white">
+        <div className="section">
+          <div className="text-center mb-12">
+            <p className="section-label mx-auto">Membership Pricing</p>
+            <h2 className="section-heading text-3xl mb-3">Choose Your Plan</h2>
+            <div className="gold-bar mx-auto" />
+            <p className="answer-capsule mx-auto text-center mt-4">
+              Three tiers designed for every stage of your trading journey.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {pricingPlans.map((plan) => (
+              <div
+                key={plan.label}
+                className={`card p-8 flex flex-col items-center text-center gap-4 relative ${
+                  plan.highlight ? "border-2 border-gold-300 shadow-lg" : ""
+                }`}
+              >
+                {plan.highlight && (
+                  <span className="badge bg-gold-300/20 text-gold-300 border border-gold-300/30 absolute -top-3">
+                    Most Popular
+                  </span>
+                )}
+                <div className="w-12 h-12 rounded-xl bg-navy-50 flex items-center justify-center">
+                  <plan.icon size={22} className="text-navy-500" />
+                </div>
+                <p className="font-heading font-bold text-navy-500 text-lg">{plan.label}</p>
+                <p className="text-4xl font-extrabold text-navy-500">{plan.price}</p>
+                <p className="text-brand-muted text-sm leading-relaxed">{plan.description}</p>
+                <a href="#waitlist" className={`btn-primary w-full justify-center mt-auto ${plan.highlight ? "" : "!bg-navy-500"}`}>
+                  Join Waitlist <ArrowRight size={14} />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── UPCOMING EVENT ── */}
+      <section className="section-full bg-hero-gradient text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.04] dot-grid" />
+        <div className="relative section">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-10">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Calendar size={18} className="text-gold-300" />
+                <span className="badge bg-gold-300/20 text-gold-300 border border-gold-300/30">
+                  Next Event — 30 May 2026
+                </span>
+              </div>
+              <h2 className="section-heading text-3xl text-white mb-3">
+                Agentic AI Live Event
+              </h2>
+              <div className="gold-bar mx-auto" />
+              <p className="text-white/80 leading-relaxed mt-4 max-w-xl mx-auto">
+                A one-day intensive on Agentic AI — autonomous agents, AI-powered workflows,
+                and the future of intelligent trading. Strictly limited seats.
+                Register your interest below to secure your place.
+              </p>
+            </div>
+            <EventSignupForm eventName="Agentic AI — 30 May 2026" />
           </div>
         </div>
       </section>
