@@ -49,16 +49,28 @@ export function Navbar() {
 
           {/* ── Desktop nav ── */}
           <nav className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="px-4 py-2 rounded-lg text-sm font-medium text-brand-text
-                           hover:text-navy-500 hover:bg-navy-50 transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) =>
+              link.highlight ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="ml-1 px-4 py-2 rounded-lg text-sm font-bold
+                             bg-[#FFD700] text-navy-500 hover:bg-yellow-400
+                             transition-colors shadow-sm"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-brand-text
+                             hover:text-navy-500 hover:bg-navy-50 transition-colors"
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </nav>
 
           {/* ── Desktop CTAs ── */}
@@ -71,7 +83,7 @@ export function Navbar() {
               <Phone size={13} />
               {BRAND.phone}
             </a>
-            <Link href="/local-ed" className="btn-navy text-sm py-2.5 px-5">
+            <Link href="/local-ed#book-consultation" className="btn-navy text-sm py-2.5 px-5">
               Free Consultation
             </Link>
           </div>
@@ -92,17 +104,29 @@ export function Navbar() {
       {open && (
         <div className="md:hidden border-t border-brand-border bg-white animate-fade-in">
           <div className="px-4 py-4 space-y-1">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="block px-4 py-3 rounded-xl text-sm font-medium text-brand-text
-                           hover:bg-brand-alt hover:text-navy-500 transition"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) =>
+              link.highlight ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-3 rounded-xl text-sm font-bold text-center
+                             bg-[#FFD700] text-navy-500 transition"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-3 rounded-xl text-sm font-medium text-brand-text
+                             hover:bg-brand-alt hover:text-navy-500 transition"
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
             <div className="pt-3 border-t border-brand-border mt-2 space-y-2">
               <a
                 href={`tel:${BRAND.phone}`}
@@ -112,7 +136,7 @@ export function Navbar() {
                 {BRAND.phone}
               </a>
               <Link
-                href="/local-ed"
+                href="/local-ed#book-consultation"
                 onClick={() => setOpen(false)}
                 className="btn-navy w-full text-sm"
               >

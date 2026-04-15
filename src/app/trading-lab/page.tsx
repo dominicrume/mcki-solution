@@ -190,7 +190,7 @@ export default function TradingLabPage() {
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Calendar size={18} className="text-gold-300" />
                 <span className="badge bg-gold-300/20 text-gold-300 border border-gold-300/30">
-                  Next Event — 30 May 2026
+                  Next Event — 6 June 2026
                 </span>
               </div>
               <h2 className="section-heading text-3xl text-white mb-3">
@@ -203,7 +203,7 @@ export default function TradingLabPage() {
                 Register your interest below to secure your place.
               </p>
             </div>
-            <EventSignupForm eventName="Agentic AI — 30 May 2026" />
+            <EventSignupForm eventName="Agentic AI — 6 June 2026" />
           </div>
         </div>
       </section>

@@ -5,6 +5,7 @@ import {
   BookOpen, Users, Clock, Shield, Cpu, TrendingUp, Code2, Heart, Briefcase,
 } from "lucide-react";
 import { AINavigator } from "@/components/AINavigator";
+import { CalendlyEmbed } from "@/components/CalendlyEmbed";
 
 export const metadata: Metadata = {
   title: "UK University Courses & Student Funding — MCKI Solutions",
@@ -368,8 +369,29 @@ export default function LocalEdPage() {
         </div>
       </section>
 
+      {/* ── BOOK A CONSULTATION ── */}
+      <section id="book-consultation" className="section-full bg-white">
+        <div className="section">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-10">
+              <p className="section-label mx-auto">Book a Consultation</p>
+              <h2 className="section-heading text-2xl sm:text-3xl mb-3">
+                Pick a Time That Works for You
+              </h2>
+              <div className="gold-bar mx-auto" />
+              <p className="answer-capsule mx-auto text-center mt-4">
+                Choose a free slot below and book directly into our calendar.
+                No waiting. No back-and-forth. Your consultation is confirmed
+                instantly.
+              </p>
+            </div>
+            <CalendlyEmbed />
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ── */}
-      <section className="section-full bg-white">
+      <section className="section-full bg-white pt-0">
         <div className="section">
           <div className="max-w-3xl mx-auto">
             <h2 className="section-heading text-2xl text-center mb-8">

@@ -15,9 +15,10 @@ export const BRAND = {
 } as const;
 
 export const NAV_LINKS = [
-  { label: "Education Funding",    href: "/local-ed" },
-  { label: "International",        href: "/international-ed" },
-  { label: "Wealth Lab",           href: "/trading-lab" },
+  { label: "Education Funding",    href: "/local-ed",         highlight: false },
+  { label: "International",        href: "/international-ed", highlight: false },
+  { label: "Wealth Lab",           href: "/trading-lab",      highlight: false },
+  { label: "AI Event — June 6",    href: "/events",           highlight: true  },
 ] as const;
 
 export const UNIVERSITY_PARTNERS = [
@@ -32,10 +33,11 @@ export const UNIVERSITY_PARTNERS = [
 ] as const;
 
 export const STATS = [
-  { value: "500+",  label: "Students Guided" },
-  { value: "35+",   label: "University Partners" },
-  { value: "98%",   label: "Satisfaction Rate" },
-  { value: "Free",  label: "Initial Consultation" },
+  { value: "500+",    label: "Students Guided" },
+  { value: "35+",     label: "University Partners" },
+  { value: "98%",     label: "Satisfaction Rate" },
+  { value: "Free",    label: "Initial Consultation" },
+  { value: "Jun 6",   label: "Agentic AI Event 2026" },
 ] as const;
 
 export const FAQ_SCHEMA = {

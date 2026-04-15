@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   ArrowRight, CheckCircle2, GraduationCap, BookOpen,
   Cpu, Star, ChevronRight, Shield, Clock, Users,
+  Brain, TrendingUp, Code2, Zap,
 } from "lucide-react";
 import { BRAND, STATS, UNIVERSITY_PARTNERS } from "@/lib/constants";
 
@@ -72,6 +73,22 @@ const testimonials = [
 export default function HomePage() {
   return (
     <>
+      {/* ── 0. ANNOUNCEMENT BAR ─────────────────────────────────────────── */}
+      <div className="bg-[#FFD700] text-navy-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-center gap-3 flex-wrap text-center">
+          <Zap size={15} className="flex-shrink-0" />
+          <span className="text-sm font-bold">
+            Agentic AI Masterclass — Saturday 6 June 2026, Birmingham · Only £31
+          </span>
+          <Link
+            href="/events"
+            className="text-xs font-extrabold uppercase tracking-wide underline underline-offset-2 hover:opacity-70 transition-opacity"
+          >
+            Reserve Your Seat →
+          </Link>
+        </div>
+      </div>
+
       {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
       <section className="bg-hero-gradient text-white overflow-hidden relative">
         {/* Subtle background texture */}
@@ -95,7 +112,7 @@ export default function HomePage() {
               forward. Completely free.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/local-ed" className="btn-primary text-base">
+              <Link href="/local-ed#book-consultation" className="btn-primary text-base">
                 Start Your Free Consultation <ArrowRight size={18} />
               </Link>
               <Link href="#services" className="btn-ghost-white text-base">
@@ -121,15 +138,28 @@ export default function HomePage() {
 
       {/* ── 2. STATS BAR ────────────────────────────────────────────────── */}
       <section className="bg-white border-b border-brand-border">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             {STATS.map((s) => (
-              <div key={s.label} className="stat-box">
-                <p className="text-3xl sm:text-4xl font-extrabold text-navy-500">
-                  {s.value}
-                </p>
-                <p className="text-sm text-brand-muted font-medium">{s.label}</p>
-              </div>
+              s.label === "Agentic AI Event 2026" ? (
+                <Link
+                  key={s.label}
+                  href="/events"
+                  className="stat-box rounded-2xl bg-[#FFD700]/10 border border-[#FFD700]/40 hover:bg-[#FFD700]/20 transition-colors group"
+                >
+                  <p className="text-3xl sm:text-4xl font-extrabold text-navy-500 group-hover:text-navy-600">
+                    {s.value}
+                  </p>
+                  <p className="text-sm text-navy-500 font-bold">{s.label}</p>
+                </Link>
+              ) : (
+                <div key={s.label} className="stat-box">
+                  <p className="text-3xl sm:text-4xl font-extrabold text-navy-500">
+                    {s.value}
+                  </p>
+                  <p className="text-sm text-brand-muted font-medium">{s.label}</p>
+                </div>
+              )
             ))}
           </div>
         </div>
@@ -167,7 +197,7 @@ export default function HomePage() {
                 </strong>
                 , we are with you every step of the way.
               </p>
-              <Link href="/local-ed" className="btn-navy inline-flex">
+              <Link href="/local-ed#book-consultation" className="btn-navy inline-flex">
                 Book Free Consultation <ArrowRight size={16} />
               </Link>
             </div>
@@ -262,7 +292,7 @@ export default function HomePage() {
                 ))}
               </ul>
               <div className="mt-10">
-                <Link href="/local-ed" className="btn-navy inline-flex">
+                <Link href="/local-ed#book-consultation" className="btn-navy inline-flex">
                   Get Started Free <ArrowRight size={16} />
                 </Link>
               </div>
@@ -370,6 +400,125 @@ export default function HomePage() {
                     <p className="text-brand-muted text-xs">{t.role}</p>
                   </div>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 8b. AI & BLOCKCHAIN COURSES ─────────────────────────────────── */}
+      <section className="section-full bg-white">
+        <div className="section">
+          <div className="text-center mb-14">
+            <p className="section-label mx-auto">AI & Blockchain Programmes</p>
+            <h2 className="section-heading text-3xl sm:text-4xl mb-4">
+              Specialist AI Courses — Now Available
+            </h2>
+            <div className="gold-bar mx-auto mb-5" />
+            <p className="section-subheading mx-auto text-center">
+              Five specialist programmes designed for professionals who want to lead in an
+              AI-first economy. Government-funded routes may be available.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {[
+              { icon: Brain,      title: "AI for Data Analysis",               desc: "Turn raw data into business intelligence using modern AI tools — no statistics degree required." },
+              { icon: TrendingUp, title: "AI for Trading",                     desc: "Understand and apply algorithmic and AI-driven strategies across crypto and FX markets." },
+              { icon: Code2,      title: "AI for Software Development",        desc: "Use AI co-pilots, agents, and automation to write, test, and ship code faster than ever." },
+              { icon: Cpu,        title: "Blockchain & Web3 Fundamentals",     desc: "Build on-chain confidence — from smart contracts to decentralised applications." },
+              { icon: Star,       title: "AI & Machine Learning Applications", desc: "A practical survey of ML applications across industries — built for non-engineers." },
+            ].map((course) => (
+              <div key={course.title} className="card-service group">
+                <div className="w-12 h-12 rounded-2xl bg-navy-50 flex items-center justify-center flex-shrink-0">
+                  <course.icon size={24} className="text-navy-500" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-heading font-bold text-navy-500 text-lg mb-2">{course.title}</h3>
+                  <p className="text-brand-muted leading-relaxed text-sm">{course.desc}</p>
+                </div>
+                <Link
+                  href="/local-ed#book-consultation"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold
+                             text-navy-500 group-hover:gap-3 transition-all"
+                >
+                  Check Eligibility <ChevronRight size={15} />
+                </Link>
+              </div>
+            ))}
+            {/* Event CTA card */}
+            <div className="card-service bg-[#FFD700]/10 border-[#FFD700]/40 group">
+              <div className="w-12 h-12 rounded-2xl bg-[#FFD700]/30 flex items-center justify-center flex-shrink-0">
+                <Zap size={24} className="text-navy-500" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-heading font-bold text-navy-500 text-lg mb-2">Agentic AI Masterclass</h3>
+                <p className="text-brand-muted leading-relaxed text-sm">
+                  Live, hands-on event on June 6, 2026. See all five specialist pathways demonstrated in practice. Only £31.
+                </p>
+              </div>
+              <Link
+                href="/events"
+                className="inline-flex items-center gap-1.5 text-sm font-bold
+                           text-navy-500 group-hover:gap-3 transition-all"
+              >
+                Book the Event <ChevronRight size={15} />
+              </Link>
+            </div>
+          </div>
+          <div className="text-center">
+            <Link href="/local-ed" className="btn-navy inline-flex">
+              View All Courses <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 8c. MEET THE TEAM ────────────────────────────────────────────── */}
+      <section className="section-full section-alt">
+        <div className="section">
+          <div className="text-center mb-14">
+            <p className="section-label mx-auto">Our Speakers & Leaders</p>
+            <h2 className="section-heading text-3xl sm:text-4xl mb-4">
+              The People Behind MCKI Solutions
+            </h2>
+            <div className="gold-bar mx-auto" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+            {[
+              {
+                initial: "S",
+                name: "Shofiqul Haque",
+                title: "Founder, MCKI Solutions",
+                bio: "Shofiqul founded MCKI Solutions after witnessing too many people walk away from genuine opportunities — not because they lacked ability, but because no one took the time to explain their options. With over a decade of hands-on experience in UK higher education, he has personally guided 500+ students into universities and government-funded programmes. His focus in 2026 is expanding MCKI's AI training division to help working professionals future-proof their careers.",
+                event: true,
+              },
+              {
+                initial: "R",
+                name: "Rume Dominic",
+                title: "Agentic AI Engineer & Product Strategist",
+                bio: "Rume is a senior agentic AI engineer and product strategist with deep experience building autonomous agent systems for enterprise clients. Combining technical expertise with a product management background, he specialises in translating cutting-edge AI into practical business value. He co-leads MCKI's Agentic AI Masterclass series and heads the AI curriculum design for the specialist programmes.",
+                event: true,
+              },
+            ].map((person) => (
+              <div
+                key={person.name}
+                className="bg-white rounded-3xl border border-brand-border shadow-card p-8"
+              >
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-16 h-16 rounded-full bg-navy-500 flex items-center justify-center flex-shrink-0">
+                    <span className="text-gold-300 font-extrabold text-2xl">{person.initial}</span>
+                  </div>
+                  <div>
+                    <p className="font-heading font-bold text-navy-500 text-lg">{person.name}</p>
+                    <p className="text-brand-muted text-sm">{person.title}</p>
+                  </div>
+                </div>
+                <p className="text-brand-muted text-sm leading-relaxed mb-5">{person.bio}</p>
+                {person.event && (
+                  <Link href="/events" className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-500 hover:gap-3 transition-all">
+                    Speaking at June 6 Event <ChevronRight size={14} />
+                  </Link>
+                )}
               </div>
             ))}
           </div>

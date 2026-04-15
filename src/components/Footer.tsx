@@ -14,7 +14,7 @@ const footerLinks = {
     { label: "About Us",         href: "/#about" },
     { label: "Testimonials",     href: "/#testimonials" },
     { label: "FAQ",              href: "/#faq" },
-    { label: "Free Consultation",href: "/local-ed" },
+    { label: "Free Consultation",href: "/local-ed#book-consultation" },
   ],
   Legal: [
     { label: "Privacy Policy",   href: "/privacy" },
