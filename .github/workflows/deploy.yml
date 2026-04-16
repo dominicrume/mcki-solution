@@ -4,14 +4,26 @@ on:
   push:
     branches: [main]
 
+env:
+  PROJECT_ID: elite-eagles-den
+  REGION: europe-west2
+  BACKEND_SERVICE: mcki-ai-navigator
+  FRONTEND_SERVICE: mcki-frontend
+  BACKEND_URL: https://mcki-ai-navigator-1090728564162.europe-west2.run.app
+
 jobs:
   deploy-backend:
     name: Deploy FastAPI Backend
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
 
-      - uses: google-github-actions/auth@v2
+      - id: auth
+        uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
@@ -19,24 +31,32 @@ jobs:
 
       - name: Deploy Backend
         run: |
-          gcloud run deploy mcki-ai-navigator \
+          gcloud run deploy $BACKEND_SERVICE \
             --source ./backend \
-            --region europe-west2 \
+            --region $REGION \
             --platform managed \
             --allow-unauthenticated \
             --port 8080 \
             --memory 512Mi \
-            --project ${{ secrets.GCP_PROJECT_ID }} \
+            --cpu 1 \
+            --min-instances 0 \
+            --max-instances 5 \
+            --project $PROJECT_ID \
             --quiet
 
   deploy-frontend:
     name: Deploy Next.js Frontend
     runs-on: ubuntu-latest
     needs: deploy-backend
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
 
-      - uses: google-github-actions/auth@v2
+      - id: auth
+        uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
@@ -44,13 +64,16 @@ jobs:
 
       - name: Deploy Frontend
         run: |
-          gcloud run deploy mcki-frontend \
+          gcloud run deploy $FRONTEND_SERVICE \
             --source . \
-            --region europe-west2 \
+            --region $REGION \
             --platform managed \
             --allow-unauthenticated \
             --port 3000 \
             --memory 1Gi \
-            --set-env-vars "NEXT_PUBLIC_API_URL=https://mcki-ai-navigator-1090728564162.europe-west2.run.app" \
-            --project ${{ secrets.GCP_PROJECT_ID }} \
+            --cpu 1 \
+            --min-instances 0 \
+            --max-instances 10 \
+            --set-env-vars "NEXT_PUBLIC_API_URL=$BACKEND_URL" \
+            --project $PROJECT_ID \
             --quiet
