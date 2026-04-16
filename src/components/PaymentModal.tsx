@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { X, Copy, CheckCircle2, Banknote, ArrowRight, Building2 } from "lucide-react";
+import { useRef, useCallback } from "react";
+import { X, Copy, CheckCircle2, Banknote, Building2 } from "lucide-react";
+import { useState } from "react";
 
 const BANK = {
   name:          "MCKI SOLUTIONS LTD",
@@ -12,6 +13,39 @@ const BANK = {
   amount:        "£31",
 };
 
+function CopyButton({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(value);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      aria-label={`Copy ${value}`}
+      className="ml-2 p-1.5 rounded-lg hover:bg-navy-100 text-navy-400 hover:text-navy-600 transition flex-shrink-0"
+    >
+      {copied
+        ? <CheckCircle2 size={14} className="text-emerald-500" />
+        : <Copy size={14} />}
+    </button>
+  );
+}
+
+function BankRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between py-3 border-b border-slate-100 last:border-0">
+      <div>
+        <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">{label}</p>
+        <p className="text-navy-600 font-bold text-[15px] mt-0.5 font-mono tracking-wide">{value}</p>
+      </div>
+      <CopyButton value={value} />
+    </div>
+  );
+}
+
 export function ReserveSeatButton({
   label     = "Reserve My Seat — £31",
   className = "btn-primary text-base",
@@ -19,121 +53,108 @@ export function ReserveSeatButton({
   label?:     string;
   className?: string;
 }) {
-  const [open, setOpen]               = useState(false);
-  const [copiedField, setCopiedField] = useState<string | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const copy = async (val: string, field: string) => {
-    await navigator.clipboard.writeText(val);
-    setCopiedField(field);
-    setTimeout(() => setCopiedField(null), 2000);
+  const openModal  = useCallback(() => dialogRef.current?.showModal(), []);
+  const closeModal = useCallback(() => dialogRef.current?.close(),     []);
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
+    const rect = dialogRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    if (
+      e.clientX < rect.left  || e.clientX > rect.right ||
+      e.clientY < rect.top   || e.clientY > rect.bottom
+    ) {
+      closeModal();
+    }
   };
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [open]);
-
-  const CopyBtn = ({ val, field }: { val: string; field: string }) => (
-    <button
-      type="button"
-      onClick={() => copy(val, field)}
-      className="ml-2 p-1.5 rounded-md hover:bg-navy-100 text-navy-500 transition-all flex-shrink-0"
-      title="Copy"
-    >
-      {copiedField === field
-        ? <CheckCircle2 size={14} className="text-emerald-500" />
-        : <Copy size={14} />}
-    </button>
-  );
-
-  const Row = ({ label: rowLabel, value, field }: { label: string; value: string; field: string }) => (
-    <div className="flex items-center justify-between py-3 border-b border-brand-border last:border-0">
-      <div>
-        <p className="text-xs text-brand-muted font-medium uppercase tracking-wide">{rowLabel}</p>
-        <p className="text-navy-500 font-bold text-base mt-0.5 font-mono">{value}</p>
-      </div>
-      <CopyBtn val={value} field={field} />
-    </div>
-  );
 
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className={className}>
-        {label} <ArrowRight size={18} />
+      {/* ── Trigger button ── */}
+      <button
+        type="button"
+        onClick={openModal}
+        className={className}
+      >
+        {label}
       </button>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4 modal-backdrop"
-          onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}
-        >
-          <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-modal-in">
+      {/* ── Native <dialog> modal ── */}
+      <dialog
+        ref={dialogRef}
+        onClick={handleBackdropClick}
+        className="payment-dialog"
+      >
+        <div className="payment-dialog-inner">
 
-            {/* ── Navy header ── */}
-            <div className="bg-hero-gradient px-7 pt-8 pb-6 text-white">
-              <button
-                type="button"
-                title="Close payment details"
-                aria-label="Close payment details"
-                onClick={() => setOpen(false)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition"
-              >
-                <X size={16} />
-              </button>
+          {/* Header */}
+          <div className="payment-dialog-header">
+            <button
+              type="button"
+              onClick={closeModal}
+              aria-label="Close"
+              className="payment-dialog-close"
+            >
+              <X size={16} />
+            </button>
 
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#FFD700]/20 border border-[#FFD700]/40 flex items-center justify-center">
-                  <Banknote size={24} className="text-[#FFD700]" />
-                </div>
-                <div>
-                  <p className="text-[#FFD700] text-xs font-bold uppercase tracking-widest">Secure Your Seat</p>
-                  <p className="text-white font-bold text-lg leading-tight">Bank Transfer — {BANK.amount}</p>
-                </div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="payment-dialog-icon">
+                <Banknote size={22} className="text-[#FFD700]" />
               </div>
-              <p className="text-white/75 text-sm leading-relaxed">
-                Transfer <strong className="text-[#FFD700]">{BANK.amount}</strong> to confirm your place at the
-                Agentic AI Masterclass — <strong>6 June 2026 · 1PM–4PM · Birmingham + Zoom</strong>.
-              </p>
-            </div>
-
-            {/* ── Bank details ── */}
-            <div className="px-7 py-5">
-              <div className="flex items-center gap-2 mb-4">
-                <Building2 size={16} className="text-brand-muted" />
-                <span className="text-sm font-bold text-navy-500">{BANK.bank}</span>
+              <div>
+                <p className="text-[#FFD700] text-[10px] font-bold uppercase tracking-[0.15em]">Secure Your Seat</p>
+                <p className="text-white font-extrabold text-xl leading-tight">Bank Transfer — {BANK.amount}</p>
               </div>
-              <Row label="Account Name"   value={BANK.name}          field="name" />
-              <Row label="Sort Code"      value={BANK.sortCode}      field="sort" />
-              <Row label="Account Number" value={BANK.accountNumber} field="acc"  />
-              <Row label="Reference"      value={BANK.ref}           field="ref"  />
-              <Row label="Amount"         value={BANK.amount}        field="amt"  />
             </div>
+            <p className="text-white/75 text-sm leading-relaxed">
+              Transfer <strong className="text-[#FFD700]">{BANK.amount}</strong> using the details below to
+              confirm your place at the Agentic AI Masterclass —{" "}
+              <strong>6 June 2026 · 1PM–4PM · Birmingham + Zoom</strong>.
+            </p>
+          </div>
 
-            {/* ── Amber notice ── */}
-            <div className="mx-7 mb-5 bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-800 leading-relaxed">
-              <p className="font-bold mb-1">📌 Use the exact reference!</p>
-              <p>Include <strong>{BANK.ref}</strong> so we can match your payment. Seat confirmation and event details emailed within 2 hours of payment.</p>
+          {/* Bank details */}
+          <div className="px-6 pt-5 pb-2">
+            <div className="flex items-center gap-2 mb-3">
+              <Building2 size={14} className="text-slate-400" />
+              <span className="text-xs font-bold text-slate-500">{BANK.bank}</span>
             </div>
+            <BankRow label="Account Name"   value={BANK.name}          />
+            <BankRow label="Sort Code"      value={BANK.sortCode}      />
+            <BankRow label="Account Number" value={BANK.accountNumber} />
+            <BankRow label="Reference"      value={BANK.ref}           />
+            <BankRow label="Amount"         value={BANK.amount}        />
+          </div>
 
-            {/* ── Footer ── */}
-            <div className="px-7 pb-7">
-              <p className="text-xs text-brand-muted text-center mb-4">
-                Questions?{" "}
-                <a href="tel:+447889417914" className="text-navy-500 font-semibold">+44 7889 417914</a>
-                {" · "}
-                <a href="mailto:Info@mckisolutions.com" className="text-navy-500 font-semibold">Info@mckisolutions.com</a>
-              </p>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="w-full py-3 rounded-xl border-2 border-navy-500 text-navy-500 font-bold text-sm hover:bg-navy-50 transition"
-              >
-                Close
-              </button>
-            </div>
+          {/* Notice */}
+          <div className="mx-6 mb-4 mt-2 bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
+            <p className="font-bold mb-1">📌 Important — use the reference!</p>
+            <p className="leading-relaxed text-xs">
+              Include <strong>{BANK.ref}</strong> as your payment reference so we can match your booking.
+              Your seat confirmation email arrives within 2 hours of payment.
+            </p>
+          </div>
+
+          {/* Footer */}
+          <div className="px-6 pb-6">
+            <p className="text-xs text-slate-400 text-center mb-3">
+              Questions?{" "}
+              <a href="tel:+447889417914" className="text-navy-500 font-semibold">+44 7889 417914</a>
+              {" · "}
+              <a href="mailto:Info@mckisolutions.com" className="text-navy-500 font-semibold">Info@mckisolutions.com</a>
+            </p>
+            <button
+              type="button"
+              onClick={closeModal}
+              className="w-full py-2.5 rounded-xl border-2 border-navy-400 text-navy-500 font-bold text-sm hover:bg-navy-50 transition"
+            >
+              Close
+            </button>
           </div>
         </div>
-      )}
+      </dialog>
     </>
   );
 }
