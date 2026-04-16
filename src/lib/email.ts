@@ -138,9 +138,9 @@ export async function sendWaitlistConfirmation(data: {
 }): Promise<void> {
   const referralUrl = `${BRAND.url}/trading-lab?ref=${data.referralCode}`;
   const body = `
-    ${heading("You're on the Wealth Lab waitlist!")}
-    ${para(`Thank you for joining — you are currently <strong style="color:#1F4E79;">#${data.queuePosition}</strong> in the queue.`)}
-    ${para("The MCKI Wealth Lab is an AI-powered Crypto and FX trading intelligence platform launching exclusively to early adopters. The higher your position, the better your access tier.")}
+    ${heading(`Welcome aboard — you're officially on the list! 🎉`)}
+    ${para(`Thank you so much for joining the MCKI Wealth Lab waitlist. We are genuinely excited to have you with us. You are currently <strong style="color:#1F4E79;">#${data.queuePosition}</strong> in the queue — and every referral moves you up.`)}
+    ${para("The MCKI Wealth Lab is an AI-powered Crypto and FX trading intelligence platform built for people who want an edge. We are launching exclusively to early adopters, so your position in this queue matters. The earlier you are, the better your access tier.")}
     ${divider()}
     ${heading("Move up the queue — share your link")}
     ${para("Every person who joins using your unique referral link moves you one place forward.")}
