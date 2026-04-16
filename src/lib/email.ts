@@ -259,9 +259,10 @@ export async function sendBookingCRM(data: {
 // ═══════════════════════════════════════════════════════════════════════════
 
 const TICKET_LABELS: Record<string, { label: string; price: string }> = {
-  private_adult:    { label: "Private Adult",    price: "£600" },
-  private_teenager: { label: "Private Teenager", price: "£250" },
-  agent_ai:         { label: "Agent AI",         price: "£1,500" },
+  day_event:        { label: "1-Day Masterclass", price: "£31"  },
+  private_adult:    { label: "Private Adult",      price: "£600" },
+  private_teenager: { label: "Private Teenager",   price: "£250" },
+  agent_ai:         { label: "Agent AI",           price: "£1,500" },
 };
 
 export async function sendEventConfirmation(data: {
@@ -276,19 +277,30 @@ export async function sendEventConfirmation(data: {
     ${para(`Your interest has been recorded for <strong>${data.event}</strong>. We'll send your payment link and event details within <strong>24 hours</strong>.`)}
     ${table(`
       ${highlight("Event", data.event)}
-      ${highlight("Date", "30 May 2026")}
+      ${highlight("Date", "6 June 2026 · 1:00 PM – 4:00 PM")}
       ${highlight("Ticket", ticket.label)}
       ${highlight("Investment", ticket.price)}
-      ${highlight("Location", "Midlands, United Kingdom (full details to follow)")}
+      ${highlight("Location", "Revenhurst House, Digbeth, Birmingham B12 0HD + Zoom")}
     `)}
     ${divider()}
-    ${para("This is a <strong>strictly limited seats</strong> event focused entirely on Agentic AI — autonomous agents, AI-powered workflows, and the future of intelligent business.")}
+    ${heading("Complete Your Payment to Confirm Your Seat")}
+    ${para("Please transfer <strong>£31</strong> using the bank details below. Use your name as the reference so we can match your payment. Your seat is confirmed once payment is received.")}
+    ${table(`
+      ${highlight("Account Name", "MCKI SOLUTIONS LTD")}
+      ${highlight("Sort Code", "30-98-97")}
+      ${highlight("Account Number", "47910663")}
+      ${highlight("Bank", "Lloyds Bank")}
+      ${highlight("Reference", "JUNE6-EVENT")}
+      ${highlight("Amount", "£31")}
+    `)}
+    ${para("Your confirmation and event details will be emailed within <strong>2 hours</strong> of payment being received.")}
+    ${divider()}
     ${para(`Questions? Call <a href="tel:${BRAND.phone}" style="color:#1F4E79;font-weight:600;">${BRAND.phone}</a> or email <a href="mailto:${BRAND.email}" style="color:#1F4E79;">${BRAND.email}</a>.`)}
-    ${cta("View event details", `${BRAND.url}/trading-lab`)}
+    ${cta("View event details", `${BRAND.url}/events`)}
   `;
   await sendEmail({
     to: data.email,
-    subject: `Event registration confirmed — Agentic AI · 30 May 2026`,
+    subject: `Event registration confirmed — Agentic AI Masterclass · 6 June 2026`,
     html: layout("Event Registration Confirmed", body),
   });
 }
@@ -316,7 +328,7 @@ export async function sendEventCRM(data: {
   `;
   await sendEmail({
     to: CRM_RECIPIENTS,
-    subject: `[Event] ${data.name} · ${ticket.label} (${ticket.price}) — Agentic AI 30 May`,
+    subject: `[Event] ${data.name} · ${ticket.label} (${ticket.price}) — Agentic AI 6 June 2026`,
     html: layout("New Event Registration", body),
   });
 }

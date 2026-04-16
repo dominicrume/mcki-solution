@@ -131,7 +131,8 @@ async function runAgentsAndStore(mode: Mode, data: Record<string, string>) {
   try {
     const { interests, country, education } = data;
 
-    const careers = await callOpenAI(`
+    // Try OpenAI first — gracefully fall back to rich pre-built content
+    let careers = await callOpenAI(`
 Act as a global career strategist.
 Suggest 5 high-income career paths for someone with these attributes:
 Interests: ${interests}
@@ -144,7 +145,12 @@ For each career explain:
 - Key skills required
     `);
 
-    const painPoints = await callOpenAI(`
+    let painPoints = "";
+    let roadmap = "";
+    let tools = "";
+
+    if (careers) {
+      painPoints = await callOpenAI(`
 Based on these career options:
 ${careers}
 
@@ -152,9 +158,8 @@ Identify the biggest challenges people face entering these careers:
 - Skill gaps
 - Hiring barriers
 - Education limitations
-    `);
-
-    const roadmap = await callOpenAI(`
+      `);
+      roadmap = await callOpenAI(`
 Based on these career challenges:
 ${painPoints}
 
@@ -163,9 +168,8 @@ Create a practical 12-month roadmap to enter this career field for someone in ${
 - Month 4–6: Skill building
 - Month 7–9: Portfolio projects
 - Month 10–12: Job readiness
-    `);
-
-    const tools = await callOpenAI(`
+      `);
+      tools = await callOpenAI(`
 Based on this roadmap:
 ${roadmap}
 
@@ -174,7 +178,17 @@ Recommend the best AI tools to accelerate learning:
 - Research tools
 - Productivity tools
 - Portfolio builders
-    `);
+      `);
+    }
+
+    // Use fallback if OpenAI not available or returned empty
+    if (!careers || !painPoints || !roadmap || !tools) {
+      const fallback = buildFallbackBlueprint(data);
+      if (!careers)    careers    = fallback.careers;
+      if (!painPoints) painPoints = fallback.painPoints;
+      if (!roadmap)    roadmap    = fallback.roadmap;
+      if (!tools)      tools      = fallback.tools;
+    }
 
     await sendBlueprintEmail(data, careers, painPoints, roadmap, tools);
     await sendBlueprintCRM(data);
@@ -187,10 +201,168 @@ Recommend the best AI tools to accelerate learning:
   }
 }
 
+// ── Rich fallback content (no OpenAI key needed) ──────────────────────────
+function buildFallbackBlueprint(data: Record<string, string>): {
+  careers: string;
+  painPoints: string;
+  roadmap: string;
+  tools: string;
+} {
+  const interests = data.interests?.toLowerCase() ?? "";
+  const country = data.country ?? "UK";
+  const education = data.education ?? "University degree";
+
+  const isAI = /ai|machine learning|data|tech|software|coding|programming/.test(interests);
+  const isFinance = /finance|trading|investment|crypto|banking|fintech/.test(interests);
+  const isHealth = /health|medical|nursing|care|pharmacy/.test(interests);
+  const isCreative = /design|creative|marketing|media|content|writing/.test(interests);
+
+  let careers: string;
+  let painPoints: string;
+  let roadmap: string;
+  let tools: string;
+
+  if (isAI) {
+    careers = `**1. Agentic AI Engineer** — £65,000–£120,000/yr
+Build autonomous AI agents that perform tasks end-to-end. Explosive demand across fintech, healthcare, and enterprise. Skills: Python, LangChain, CrewAI, LLM APIs.
+
+**2. Machine Learning Engineer** — £60,000–£110,000/yr
+Design and deploy ML models at scale. Top employers: Google, DeepMind, NHS AI Lab. Skills: PyTorch, TensorFlow, MLOps.
+
+**3. AI Product Manager** — £70,000–£130,000/yr
+Bridge business and AI engineering. One of the fastest-growing roles in 2026. Skills: product thinking, prompt engineering, stakeholder communication.
+
+**4. Data Scientist** — £50,000–£90,000/yr
+Extract insights from complex datasets to drive business decisions. Skills: Python, SQL, statistics, visualisation.
+
+**5. AI Solutions Architect** — £80,000–£140,000/yr
+Design enterprise AI infrastructure. Highly paid consulting and advisory roles available. Skills: cloud platforms (GCP/Azure/AWS), system design, LLM integration.`;
+
+    painPoints = `**Skill gaps:** Most beginners underestimate the math (linear algebra, probability) and Python depth required. Start with fundamentals before diving into frameworks.
+
+**Portfolio gaps:** Employers want to see real projects — not just Kaggle notebooks. Build things that solve actual problems.
+
+**Credential confusion:** Certificates are everywhere. Employers in ${country} value demonstrated skills and GitHub portfolios over certificates alone.
+
+**Networking gap:** The AI job market in ${country} runs heavily on referrals. LinkedIn activity and community involvement (meetups, GitHub contributions) open more doors than cold applications.
+
+**Imposter syndrome:** Extremely common. The field moves fast — even senior engineers feel behind. Consistent learning beats perfection.`;
+
+    roadmap = `**Months 1–3: Foundations**
+• Complete Python for AI (freeCodeCamp, fast.ai, or Kaggle Learn)
+• Study linear algebra and probability basics (3Blue1Brown on YouTube)
+• Build 2 mini-projects: a chatbot and a data visualisation dashboard
+• Set up GitHub and document everything publicly
+• If based in ${country}: check eligibility for government-funded AI courses via Student Finance England
+
+**Months 4–6: Skill Building**
+• Deep-dive into LangChain, CrewAI, and the OpenAI API
+• Build an agentic workflow that automates a real task (e.g. email drafting, data pipeline)
+• Contribute to one open-source AI project
+• Attend local AI meetups or join communities (Hugging Face Discord, AI UK events)
+• Start a weekly LinkedIn post documenting your learning — this builds your personal brand
+
+**Months 7–9: Portfolio Projects**
+• Build a full-stack AI application (front-end + AI backend + deployment)
+• Create a "Career Blueprint Generator" or similar useful tool with an LLM
+• Write 2–3 technical articles on Medium or Dev.to
+• Reach out to 5 companies doing interesting AI work in ${country}
+
+**Months 10–12: Job Readiness**
+• Refine your GitHub, LinkedIn, and CV with AI-specific keywords
+• Apply to junior AI engineer, data analyst, and ML engineer roles
+• Prepare for technical interviews: LeetCode (medium), system design, ML fundamentals
+• Consider MCKI Solutions' 8-week Agentic AI programme for a structured pathway with career support`;
+
+    tools = `**Coding & Development**
+• Claude Code / GitHub Copilot — AI pair programmer (write code 5x faster)
+• Google Colab — free GPU for ML experiments
+• VS Code + Python — your core development environment
+
+**AI Frameworks**
+• LangChain & LangGraph — build multi-step AI pipelines
+• CrewAI — multi-agent coordination
+• Hugging Face — access 200,000+ pre-trained models
+
+**Research & Learning**
+• NotebookLM (Google) — summarise papers and research in seconds
+• Perplexity AI — AI-powered research engine
+• arXiv + Semantic Scholar — stay on top of AI research
+
+**Productivity**
+• Notion AI — organise your learning roadmap
+• Cursor — AI-native code editor
+• N8N / Make.com — build AI automations without full coding
+
+**Portfolio Builders**
+• GitHub — host all your projects
+• Streamlit — turn Python scripts into demo web apps in minutes
+• Hugging Face Spaces — deploy AI demos for free`;
+  } else if (isFinance) {
+    careers = `**1. Quantitative Analyst (Quant)** — £70,000–£150,000/yr
+Build mathematical models for trading strategies and risk management. Skills: Python, statistics, financial modelling.
+
+**2. AI Trading Systems Developer** — £65,000–£130,000/yr
+Design automated trading bots using ML signal engines. High demand in hedge funds and fintech.
+
+**3. Financial Data Analyst** — £45,000–£80,000/yr
+Interpret market data to support investment decisions. Entry point for many finance careers.
+
+**4. FinTech Product Manager** — £60,000–£110,000/yr
+Lead AI-powered financial products. Fast-growing sector across ${country}.
+
+**5. Crypto / DeFi Developer** — £55,000–£120,000/yr
+Build decentralised financial applications on blockchain. Solidity, Web3.js, smart contracts.`;
+
+    painPoints = `**Regulatory complexity:** Financial services in ${country} are FCA-regulated. Understanding compliance requirements is essential before entering the sector.
+
+**Math barriers:** Quantitative roles require strong statistics and calculus. Many candidates underestimate this requirement.
+
+**Experience Catch-22:** Entry-level finance roles often want 2+ years of experience. Internships and simulation trading accounts help bridge this gap.
+
+**Credentials:** CFA, FRM, and fintech-specific certifications carry weight. Government-funded postgraduate loans in ${country} can cover study costs.`;
+
+    roadmap = `**Months 1–3:** Python for finance (yFinance, Pandas), Excel modelling, study financial markets basics
+**Months 4–6:** Build a trading signal simulator, learn options pricing, study FCA regulation basics
+**Months 7–9:** Complete a fintech project (portfolio tracker, crypto dashboard), network on LinkedIn Finance communities
+**Months 10–12:** Apply for analyst roles, target fintech startups and challenger banks in ${country}`;
+
+    tools = `**Trading & Analysis:** TradingView, Bloomberg Terminal (student access), Yahoo Finance API
+**Coding:** Python (Pandas, NumPy, QuantLib), Jupyter Notebooks
+**AI Tools:** Claude for financial document analysis, ChatGPT for scenario modelling
+**Learning:** Investopedia, CFA Institute resources, Coursera Financial Engineering`;
+  } else if (isHealth) {
+    careers = `**1. Digital Health Product Manager** — £55,000–£95,000/yr\n**2. Health Data Analyst** — £40,000–£70,000/yr\n**3. Clinical AI Specialist** — £50,000–£85,000/yr\n**4. Healthcare IT Consultant** — £45,000–£80,000/yr\n**5. Telehealth Platform Developer** — £50,000–£90,000/yr`;
+    painPoints = `Regulatory barriers (MHRA, CQC), long qualification timelines, data privacy constraints (GDPR + NHS data), funding cycles tied to NHS budgets.`;
+    roadmap = `**M1–3:** Study NHS Digital strategy, complete a health data course\n**M4–6:** Build a health analytics project, explore NHS Digital Academy\n**M7–9:** Network with NHS innovation hubs, apply for NHS Innovation Accelerator\n**M10–12:** Apply for digital health roles or NHS Graduate Scheme`;
+    tools = `Python (for NHS data analysis), Tableau (dashboards), NHS Data Dictionary, FHIR APIs, Microsoft Azure Health Data Services`;
+  } else if (isCreative) {
+    careers = `**1. AI Content Strategist** — £40,000–£75,000/yr\n**2. UX/UI Designer (AI-assisted)** — £45,000–£85,000/yr\n**3. Digital Marketing Manager** — £40,000–£70,000/yr\n**4. Brand & Creative Director** — £55,000–£100,000/yr\n**5. Multimedia Producer** — £35,000–£65,000/yr`;
+    painPoints = `Commoditisation pressure from AI tools, portfolio differentiation, freelance income instability, staying ahead of rapid tool changes.`;
+    roadmap = `**M1–3:** Master 3 AI creative tools (Midjourney, Claude, Runway), build a public portfolio\n**M4–6:** Launch a creative project or newsletter, grow LinkedIn presence\n**M7–9:** Land freelance clients or internship, document case studies\n**M10–12:** Apply for creative roles or launch independent studio`;
+    tools = `Midjourney / DALL-E (visuals), Claude / ChatGPT (copy), Runway (video), Figma (design), Canva AI, Adobe Firefly`;
+  } else {
+    careers = `**1. Business Analyst** — £40,000–£75,000/yr — growing demand in all sectors in ${country}
+**2. Project Manager (Agile/AI)** — £50,000–£85,000/yr — AI tools transforming delivery speed
+**3. Operations Manager** — £45,000–£80,000/yr — AI automation creating new efficiency roles
+**4. Digital Transformation Consultant** — £60,000–£110,000/yr — high demand across enterprise
+**5. Entrepreneur / Startup Founder** — unlimited potential — AI lowering barriers to entry significantly`;
+    painPoints = `Skill gaps in data literacy, uncertainty about which AI tools to adopt, and competition from candidates with specialist backgrounds. Education level (${education}) may need topping-up for senior roles.`;
+    roadmap = `**M1–3:** Identify your strongest transferable skills, complete a relevant online course (Coursera, LinkedIn Learning)
+**M4–6:** Build one project that demonstrates initiative, start posting on LinkedIn weekly
+**M7–9:** Network in target sector, informational interviews with 10 professionals
+**M10–12:** Apply for roles, negotiate with confidence, consider postgraduate study via Student Finance England`;
+    tools = `Claude AI (research & writing), Notion (productivity), LinkedIn Premium (job search), Google Analytics (data literacy), Microsoft Copilot (workplace AI)`;
+  }
+
+  return { careers, painPoints, roadmap, tools };
+}
+
 async function callOpenAI(prompt: string): Promise<string> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
-    return `[AI analysis for: ${prompt.slice(0, 60)}...]`;
+    // Return empty string — caller handles fallback via buildFallbackBlueprint
+    return "";
   }
 
   const res = await fetch("https://api.openai.com/v1/chat/completions", {

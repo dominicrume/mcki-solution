@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ArrowRight, Calendar, MapPin, Clock, Cpu, Users,
-  CheckCircle2, Star, Zap, Brain, TrendingUp, Code2,
+  Calendar, MapPin, Clock, Cpu, Users,
+  CheckCircle2, Star, Zap, Brain, TrendingUp, Code2, ArrowRight,
 } from "lucide-react";
 import { BRAND } from "@/lib/constants";
+import { ReserveSeatButton } from "@/components/PaymentModal";
 
 export const metadata: Metadata = {
   title: "Agentic AI Masterclass — June 6, 2026 | MCKI Solutions",
@@ -149,12 +150,7 @@ export default function EventsPage() {
 
             {/* Price + CTA */}
             <div className="flex flex-wrap items-center gap-4">
-              <Link
-                href="/local-ed#book-consultation"
-                className="btn-primary text-base"
-              >
-                Reserve My Seat — £31 <ArrowRight size={18} />
-              </Link>
+              <ReserveSeatButton className="btn-primary text-base inline-flex items-center gap-2" />
               <span className="text-white/50 text-sm">
                 Seats filling fast · Group discounts available
               </span>
@@ -201,9 +197,7 @@ export default function EventsPage() {
                 ))}
               </ul>
               <div className="mt-10">
-                <Link href="/local-ed#book-consultation" className="btn-navy inline-flex">
-                  Book My Place — £31 <ArrowRight size={16} />
-                </Link>
+                <ReserveSeatButton label="Book My Place — £31" className="btn-navy inline-flex items-center gap-2" />
               </div>
             </div>
 
@@ -421,9 +415,7 @@ export default function EventsPage() {
                 <p className="font-heading font-bold text-navy-500 text-lg">{plan.label}</p>
                 <p className="text-4xl font-extrabold text-navy-500">{plan.price}</p>
                 <p className="text-brand-muted text-sm leading-relaxed flex-1">{plan.desc}</p>
-                <Link href="/local-ed#book-consultation" className="btn-navy justify-center">
-                  {plan.cta} <ArrowRight size={14} />
-                </Link>
+                <ReserveSeatButton label={plan.cta} className="btn-navy justify-center inline-flex items-center gap-2 w-full" />
               </div>
             ))}
           </div>
@@ -464,9 +456,7 @@ export default function EventsPage() {
               This is the most practical AI training event happening in the Midlands this year.
               Do not wait until the seats are gone.
             </p>
-            <Link href="/local-ed#book-consultation" className="btn-primary text-base">
-              Reserve My Place — £31 <ArrowRight size={18} />
-            </Link>
+            <ReserveSeatButton label="Reserve My Place — £31" className="btn-primary text-base inline-flex items-center gap-2" />
             <p className="mt-4 text-white/40 text-xs">
               Group bookings: {BRAND.email} · Subject: &ldquo;Group Booking — June 6&rdquo;
             </p>
