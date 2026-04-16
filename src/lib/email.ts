@@ -213,7 +213,12 @@ export async function sendBookingConfirmation(data: {
     `)}
     ${divider()}
     ${para(`If you need to speak to us sooner, call <a href="tel:${BRAND.phone}" style="color:#1F4E79;font-weight:600;">${BRAND.phone}</a> — we're here to help.`)}
-    ${cta("Learn more about our services", `${BRAND.url}/family-support`)}
+    <div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin:16px 0;">
+      <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#1F4E79;">📹 Your Google Meet Link</p>
+      <p style="margin:0 0 8px;font-size:13px;color:#374151;">Join your consultation via Google Meet — no download needed.</p>
+      <a href="https://meet.google.com/ged-mwoz-grs" style="display:inline-block;padding:10px 20px;background:#1F4E79;color:#FFD700;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;">Join Google Meet →</a>
+    </div>
+    ${cta("Learn more about our services", `${BRAND.url}/local-ed`)}
     ${divider()}
     ${para("Please keep your reference number safe — quote it if you contact us.")}
   `;
@@ -367,7 +372,8 @@ export async function sendBlueprintEmail(
     <div style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:10px;padding:20px;margin:24px 0;">
       <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#1F4E79;">Ready to take the next step?</p>
       <p style="margin:0 0 12px;font-size:13px;color:#374151;">Book a free 30-minute consultation with our education advisors. We'll map out exactly how to turn this blueprint into action.</p>
-      ${cta("Book Free Consultation", `${BRAND.url}/family-support`)}
+      ${cta("Book Free Consultation", `${BRAND.url}/local-ed#book-consultation`)}
+      <p style="margin:8px 0 0;font-size:12px;color:#6b7280;">Or join directly via <a href="https://meet.google.com/ged-mwoz-grs" style="color:#1F4E79;font-weight:600;">Google Meet →</a></p>
     </div>
     ${para(`Call us directly: <a href="tel:${BRAND.phone}" style="color:#1F4E79;font-weight:600;">${BRAND.phone}</a>`)}
   `;

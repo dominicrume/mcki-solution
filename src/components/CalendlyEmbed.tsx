@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Calendar, ExternalLink, Phone } from "lucide-react";
 
 const CALENDLY_URL = "https://calendly.com/adammasum74/30min";
+const GOOGLE_MEET = "https://meet.google.com/ged-mwoz-grs";
 
 export function CalendlyEmbed() {
   const [loaded, setLoaded] = useState(false);
@@ -31,6 +32,12 @@ export function CalendlyEmbed() {
             </a>
             <a href="tel:+447889417914" className="btn-ghost border border-brand-border inline-flex items-center gap-2">
               <Phone size={16} /> Call Us Instead
+            </a>
+          </div>
+          <div className="mt-4 flex items-center justify-center gap-2 text-sm text-brand-muted">
+            <span>Video call link:</span>
+            <a href={GOOGLE_MEET} target="_blank" rel="noopener noreferrer" className="text-navy-500 font-semibold underline underline-offset-2">
+              Google Meet → Join
             </a>
           </div>
         </div>
