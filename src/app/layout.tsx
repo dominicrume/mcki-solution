@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CookieConsent } from "@/components/CookieConsent";
 import { ORG_SCHEMA, FAQ_SCHEMA } from "@/lib/constants";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: {
@@ -32,7 +40,7 @@ export const metadata: Metadata = {
     siteName:    "MCKI Solutions",
     locale:      "en_GB",
     type:        "website",
-    images: [{ url: "/logo.jpg", width: 800, height: 600, alt: "MCKI Solutions" }],
+    images: [{ url: "https://mckisolutions.com/logo.jpg", width: 1200, height: 630, alt: "MCKI Solutions" }],
   },
   twitter: {
     card:        "summary_large_image",
@@ -45,8 +53,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className="scroll-smooth">
+    <html lang="en-GB" className={`scroll-smooth ${inter.variable}`}>
       <head>
+        {/* Eliminate render-blocking third-party connections */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_SCHEMA) }}

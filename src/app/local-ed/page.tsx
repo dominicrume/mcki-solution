@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   GraduationCap, CheckCircle2, ArrowRight,
-  BookOpen, Users, Clock, Shield, Cpu, TrendingUp, Code2, Heart, Briefcase,
+  BookOpen, Users, Clock, Shield, Cpu, Code2, Heart, Briefcase,
 } from "lucide-react";
-import { AINavigator } from "@/components/AINavigator";
-import { CalendlyEmbed } from "@/components/CalendlyEmbed";
+
+// Heavy client components — lazy-loaded so they don't block initial page paint
+const AINavigator  = dynamic(() => import("@/components/AINavigator").then((m) => m.AINavigator),   { ssr: false });
+const CalendlyEmbed = dynamic(() => import("@/components/CalendlyEmbed").then((m) => m.CalendlyEmbed), { ssr: false });
 
 export const metadata: Metadata = {
   title: "UK University Courses & Student Funding — MCKI Solutions",

@@ -137,11 +137,13 @@ export function BookingForm() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1.5">
+          <label htmlFor="preferred-date" className="block text-sm font-medium text-slate-700 mb-1.5">
             Preferred Date
           </label>
           <input
+            id="preferred-date"
             type="date"
+            title="Preferred consultation date"
             value={preferredDate}
             onChange={(e) => setPreferredDate(e.target.value)}
             min={new Date().toISOString().split("T")[0]}
@@ -151,10 +153,12 @@ export function BookingForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1.5">
+        <label htmlFor="service-type" className="block text-sm font-medium text-slate-700 mb-1.5">
           Service Type <span className="text-red-500">*</span>
         </label>
         <select
+          id="service-type"
+          title="Service type"
           value={service}
           onChange={(e) => setService(e.target.value as ServiceType)}
           className="select"

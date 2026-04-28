@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   Calendar, MapPin, Clock, Cpu, Users,
-  CheckCircle2, Star, Zap, Brain, TrendingUp, Code2, ArrowRight,
+  CheckCircle2, Star, Zap, Brain, TrendingUp, Code2,
 } from "lucide-react";
 import { BRAND } from "@/lib/constants";
-import { ReserveSeatButton } from "@/components/PaymentModal";
+
+// Lazy-load the payment modal — it's below-fold and not needed for LCP
+const ReserveSeatButton = dynamic(
+  () => import("@/components/PaymentModal").then((m) => m.ReserveSeatButton),
+  { ssr: false, loading: () => <span className="btn-primary text-base opacity-60 cursor-wait">Reserve My Seat — £31</span> }
+);
 
 export const metadata: Metadata = {
   title: "Agentic AI Masterclass — June 6, 2026 | MCKI Solutions",

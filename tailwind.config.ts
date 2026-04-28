@@ -52,8 +52,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ["Inter", "system-ui", "sans-serif"],
-        body:    ["Inter", "system-ui", "sans-serif"],
+        heading: ["var(--font-inter)", "system-ui", "sans-serif"],
+        body:    ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       backgroundImage: {
         "hero-gradient":

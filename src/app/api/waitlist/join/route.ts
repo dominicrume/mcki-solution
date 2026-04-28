@@ -2,18 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { generateReferralCode } from "@/lib/utils";
+import { isSupabaseConfigured } from "@/lib/lead-capture";
 import { sendWaitlistConfirmation, sendWaitlistCRM } from "@/lib/email";
-
-function isSupabaseConfigured(): boolean {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
-  return (
-    url.length > 0 &&
-    !url.includes("placeholder") &&
-    key.length > 0 &&
-    !key.includes("placeholder")
-  );
-}
 
 export async function POST(req: Request) {
   try {

@@ -1,14 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { generateReferralCode } from "@/lib/utils";
+import { isSupabaseConfigured, makeReference } from "@/lib/lead-capture";
 import { sendBookingConfirmation, sendBookingCRM } from "@/lib/email";
-
-function isSupabaseConfigured(): boolean {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
-  return url.length > 0 && !url.includes("placeholder") && key.length > 0 && !key.includes("placeholder");
-}
 
 export async function POST(req: Request) {
   try {
@@ -22,7 +16,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const reference = `MCKI-${generateReferralCode(6)}`;
+    const reference = makeReference();
 
     if (isSupabaseConfigured()) {
       try {

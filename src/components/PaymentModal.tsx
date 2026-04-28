@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import { X, Copy, CheckCircle2, Banknote, Building2 } from "lucide-react";
 import { useState } from "react";
 
@@ -57,6 +57,13 @@ export function ReserveSeatButton({
 
   const openModal  = useCallback(() => dialogRef.current?.showModal(), []);
   const closeModal = useCallback(() => dialogRef.current?.close(),     []);
+
+  // Close dialog before page is hidden so it doesn't block bfcache restoration
+  useEffect(() => {
+    const handlePageHide = () => dialogRef.current?.close();
+    window.addEventListener("pagehide", handlePageHide);
+    return () => window.removeEventListener("pagehide", handlePageHide);
+  }, []);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
     const rect = dialogRef.current?.getBoundingClientRect();

@@ -2,13 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
-
-/* ── Page transition ─────────────────────────────────────────────────────── */
-@keyframes pageEnter {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+/* pageEnter removed — animation-fill-mode:both on main caused NO_FCP when tab is
+   backgrounded (Lighthouse / automated tools pause animations, leaving opacity:0 forever) */
 
 /* ── Modal pop-in animation ──────────────────────────────────────────────── */
 @keyframes modalIn {
@@ -94,7 +89,6 @@
 
   body {
     @apply bg-white text-brand-text font-body antialiased;
-    animation: pageEnter 0.4s ease-out both;
   }
 
   h1, h2, h3, h4, h5 { @apply font-heading; }
@@ -142,7 +136,8 @@
 
   .card-service {
     @apply card p-8 flex flex-col gap-4
-           hover:-translate-y-1 transition-all duration-300;
+           hover:-translate-y-1 duration-300;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   .card-testimonial {

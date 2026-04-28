@@ -83,7 +83,7 @@ export function Navbar() {
               <Phone size={13} />
               {BRAND.phone}
             </a>
-            <Link href="/local-ed#book-consultation" className="btn-navy text-sm py-2.5 px-5">
+            <Link href="/#book-consultation" className="btn-navy text-sm py-2.5 px-5">
               Free Consultation
             </Link>
           </div>

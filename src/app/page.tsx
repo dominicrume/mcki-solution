@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   ArrowRight, CheckCircle2, GraduationCap, BookOpen,
@@ -8,12 +8,18 @@ import {
 } from "lucide-react";
 import { BRAND, STATS, UNIVERSITY_PARTNERS } from "@/lib/constants";
 
+// Lazy-load the client form — keeps the critical SSR path JS-free
+const HomepageConsultationForm = dynamic(
+  () => import("@/components/HomepageConsultationForm").then((m) => m.HomepageConsultationForm),
+  { ssr: false }
+);
+
 export const metadata: Metadata = {
   title: "MCKI Solutions | UK Postgraduate Education Consultancy & Funding Guidance",
   alternates: { canonical: "https://mckisolutions.com" },
 };
 
-/* ── Data ─────────────────────────────────────────────────────────────────── */
+/* ── Static data ──────────────────────────────────────────────────────────── */
 
 const services = [
   {
@@ -27,14 +33,14 @@ const services = [
     icon: BookOpen,
     title: "Student Finance Guidance",
     body: "Many people don't realise they qualify for government funding. We check your eligibility, explain what you can access, and guide your application from first form to final approval.",
-    href: "/local-ed#navigator",
+    href: "#book-consultation",
     cta: "Check My Eligibility",
   },
   {
     icon: Cpu,
     title: "Personal Career Guidance",
     body: "We look at where you are, where you want to be, and help you figure out which postgraduate route gets you there fastest — with a clear, honest picture of what to expect.",
-    href: "/local-ed#navigator",
+    href: "#book-consultation",
     cta: "Talk to an Advisor",
   },
 ];
@@ -68,6 +74,52 @@ const testimonials = [
   },
 ];
 
+const aiCourses = [
+  { icon: Brain,      title: "AI for Data Analysis",               desc: "Turn raw data into business intelligence using modern AI tools — no statistics degree required." },
+  { icon: TrendingUp, title: "AI for Trading",                     desc: "Understand and apply algorithmic and AI-driven strategies across crypto and FX markets." },
+  { icon: Code2,      title: "AI for Software Development",        desc: "Use AI co-pilots, agents, and automation to write, test, and ship code faster than ever." },
+  { icon: Cpu,        title: "Blockchain & Web3 Fundamentals",     desc: "Build on-chain confidence — from smart contracts to decentralised applications." },
+  { icon: Star,       title: "AI & Machine Learning Applications", desc: "A practical survey of ML applications across industries — built for non-engineers." },
+];
+
+const teamMembers = [
+  {
+    initial: "S",
+    name: "Shofiqul Haque",
+    title: "Founder, MCKI Solutions",
+    bio: "Shofiqul founded MCKI Solutions after witnessing too many people walk away from genuine opportunities — not because they lacked ability, but because no one took the time to explain their options. With over a decade of hands-on experience in UK higher education, he has personally guided 500+ students into universities and government-funded programmes. His focus in 2026 is expanding MCKI's AI training division to help working professionals future-proof their careers.",
+  },
+  {
+    initial: "R",
+    name: "Rume Dominic",
+    title: "Agentic AI Engineer & Product Strategist",
+    bio: "Rume is a senior agentic AI engineer and product strategist with deep experience building autonomous agent systems for enterprise clients. Combining technical expertise with a product management background, he specialises in translating cutting-edge AI into practical business value. He co-leads MCKI's Agentic AI Masterclass series and heads the AI curriculum design for the specialist programmes.",
+  },
+];
+
+const faqs = [
+  {
+    q: "What is MCKI Solutions?",
+    a: "We are a postgraduate education consultancy based in the Midlands. We help UK residents get into university, access Student Finance England funding, and work out the best next step for their career — with a free, no-obligation consultation.",
+  },
+  {
+    q: "Do I qualify for Student Finance England postgraduate funding?",
+    a: "More people qualify than you'd think. If you are a UK resident looking to study a postgraduate Master's degree, there is a good chance you are eligible. We check for free and walk you through what you can access.",
+  },
+  {
+    q: "Is the initial consultation really free?",
+    a: "Yes — genuinely free. We have a conversation, understand your situation, and give you honest advice. There is no pitch, no pressure, and no obligation to do anything after.",
+  },
+  {
+    q: "How long does the university admissions process take?",
+    a: "Most students we work with receive conditional offers within 2–4 weeks. We manage the full application so you are never left wondering what happens next.",
+  },
+  {
+    q: "I don't have a degree. Can I still apply for a Master's?",
+    a: "Yes. Many UK universities accept relevant work experience in place of an undergraduate degree. We identify which institutions offer this pathway and find the right fit for your background.",
+  },
+];
+
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
 export default function HomePage() {
@@ -91,7 +143,6 @@ export default function HomePage() {
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
       <section className="bg-hero-gradient text-white overflow-hidden relative">
-        {/* Subtle background texture */}
         <div className="absolute inset-0 opacity-[0.04] dot-grid" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
           <div className="max-w-3xl animate-fade-up">
@@ -112,7 +163,7 @@ export default function HomePage() {
               forward. Completely free.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/local-ed#book-consultation" className="btn-primary text-base">
+              <Link href="#book-consultation" className="btn-primary text-base">
                 Start Your Free Consultation <ArrowRight size={18} />
               </Link>
               <Link href="#services" className="btn-ghost-white text-base">
@@ -121,7 +172,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Trust chips */}
           <div className="mt-16 flex flex-wrap gap-3">
             {["Free Consultation", "No Obligation", "No Jargon", "No Hidden Fees"].map((t) => (
               <span
@@ -140,7 +190,7 @@ export default function HomePage() {
       <section className="bg-white border-b border-brand-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-            {STATS.map((s) => (
+            {STATS.map((s) =>
               s.label === "Agentic AI Event 2026" ? (
                 <Link
                   key={s.label}
@@ -160,7 +210,7 @@ export default function HomePage() {
                   <p className="text-sm text-brand-muted font-medium">{s.label}</p>
                 </div>
               )
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -171,9 +221,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="animate-fade-up">
               <p className="section-label">About Us</p>
-              <h2 className="section-heading text-3xl sm:text-4xl mb-4">
-                Who We Are
-              </h2>
+              <h2 className="section-heading text-3xl sm:text-4xl mb-4">Who We Are</h2>
               <div className="gold-bar mb-6" />
               <p className="text-brand-muted text-lg leading-relaxed mb-6">
                 MCKI Solutions is a specialist education consultancy based in the
@@ -183,32 +231,25 @@ export default function HomePage() {
               </p>
               <p className="text-brand-muted leading-relaxed mb-8">
                 As a leading{" "}
-                <strong className="text-navy-500">
-                  postgraduate education consultancy UK
-                </strong>
+                <strong className="text-navy-500">postgraduate education consultancy UK</strong>
                 , our team has guided over 500 students through every stage of their
                 journey — from first enquiry to graduation. Whether you need{" "}
-                <strong className="text-navy-500">
-                  university admissions support UK
-                </strong>{" "}
-                or expert{" "}
-                <strong className="text-navy-500">
-                  Student Finance England guidance
-                </strong>
+                <strong className="text-navy-500">university admissions support UK</strong>
+                {" "}or expert{" "}
+                <strong className="text-navy-500">Student Finance England guidance</strong>
                 , we are with you every step of the way.
               </p>
-              <Link href="/local-ed#book-consultation" className="btn-navy inline-flex">
+              <Link href="#book-consultation" className="btn-navy inline-flex">
                 Book Free Consultation <ArrowRight size={16} />
               </Link>
             </div>
 
-            {/* Visual panel */}
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: Shield,  label: "Fully Accredited",     sub: "UKVI & SFE aligned" },
-                { icon: Clock,   label: "Same-Day Answers",     sub: "Know where you stand today" },
-                { icon: Users,   label: "500+ Students",        sub: "Guided to success" },
-                { icon: GraduationCap, label: "35+ Partners",   sub: "Top UK universities" },
+                { icon: Shield,        label: "Fully Accredited",  sub: "UKVI & SFE aligned" },
+                { icon: Clock,         label: "Same-Day Answers",  sub: "Know where you stand today" },
+                { icon: Users,         label: "500+ Students",     sub: "Guided to success" },
+                { icon: GraduationCap, label: "35+ Partners",      sub: "Top UK universities" },
               ].map((item) => (
                 <div
                   key={item.label}
@@ -259,8 +300,7 @@ export default function HomePage() {
                 </div>
                 <Link
                   href={svc.href}
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold
-                             text-navy-500 group-hover:gap-3 transition-all"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-500 group-hover:gap-3 transition-all"
                 >
                   {svc.cta} <ChevronRight size={15} />
                 </Link>
@@ -283,22 +323,18 @@ export default function HomePage() {
               <ul className="space-y-4">
                 {whyMcki.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <CheckCircle2
-                      size={20}
-                      className="text-navy-500 flex-shrink-0 mt-0.5"
-                    />
+                    <CheckCircle2 size={20} className="text-navy-500 flex-shrink-0 mt-0.5" />
                     <span className="text-brand-text font-medium">{item}</span>
                   </li>
                 ))}
               </ul>
               <div className="mt-10">
-                <Link href="/local-ed#book-consultation" className="btn-navy inline-flex">
+                <Link href="#book-consultation" className="btn-navy inline-flex">
                   Get Started Free <ArrowRight size={16} />
                 </Link>
               </div>
             </div>
 
-            {/* Quote pull */}
             <div className="bg-white rounded-3xl border border-brand-border shadow-card p-10">
               <p className="text-4xl text-gold-300 font-serif leading-none mb-4">&ldquo;</p>
               <p className="text-navy-500 text-lg font-medium leading-relaxed mb-6">
@@ -341,9 +377,7 @@ export default function HomePage() {
       <section className="bg-navy-gradient text-white section-full">
         <div className="section">
           <div className="max-w-3xl mx-auto text-center">
-            <p className="section-label text-gold-300 mx-auto">
-              Student Finance England
-            </p>
+            <p className="section-label text-gold-300 mx-auto">Student Finance England</p>
             <h2 className="font-heading font-bold text-3xl sm:text-4xl leading-tight mb-5">
               Government Funding — Made Simple
             </h2>
@@ -354,7 +388,7 @@ export default function HomePage() {
               know it. We check your eligibility for free, explain exactly what
               you could access, and guide your application from start to finish.
             </p>
-            <Link href="/local-ed#navigator" className="btn-primary text-base">
+            <Link href="#book-consultation" className="btn-primary text-base">
               Check My Eligibility — Free <ArrowRight size={18} />
             </Link>
             <p className="mt-4 text-white/50 text-xs">
@@ -378,12 +412,8 @@ export default function HomePage() {
             {testimonials.map((t) => (
               <div key={t.name} className="card-testimonial">
                 <div className="flex gap-0.5">
-                  {[...Array(t.rating)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={16}
-                      className="text-gold-300 fill-gold-300"
-                    />
+                  {Array.from({ length: t.rating }, (_, i) => (
+                    <Star key={i} size={16} className="text-gold-300 fill-gold-300" />
                   ))}
                 </div>
                 <p className="text-brand-text leading-relaxed flex-1">
@@ -391,9 +421,7 @@ export default function HomePage() {
                 </p>
                 <div className="flex items-center gap-3 pt-4 border-t border-brand-border">
                   <div className="w-9 h-9 rounded-full bg-navy-500 flex items-center justify-center flex-shrink-0">
-                    <span className="text-gold-300 font-bold text-sm">
-                      {t.name[0]}
-                    </span>
+                    <span className="text-gold-300 font-bold text-sm">{t.name[0]}</span>
                   </div>
                   <div>
                     <p className="font-semibold text-navy-500 text-sm">{t.name}</p>
@@ -406,7 +434,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── 8b. AI & BLOCKCHAIN COURSES ─────────────────────────────────── */}
+      {/* ── 9. AI & BLOCKCHAIN COURSES ──────────────────────────────────── */}
       <section className="section-full bg-white">
         <div className="section">
           <div className="text-center mb-14">
@@ -421,45 +449,41 @@ export default function HomePage() {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            {[
-              { icon: Brain,      title: "AI for Data Analysis",               desc: "Turn raw data into business intelligence using modern AI tools — no statistics degree required." },
-              { icon: TrendingUp, title: "AI for Trading",                     desc: "Understand and apply algorithmic and AI-driven strategies across crypto and FX markets." },
-              { icon: Code2,      title: "AI for Software Development",        desc: "Use AI co-pilots, agents, and automation to write, test, and ship code faster than ever." },
-              { icon: Cpu,        title: "Blockchain & Web3 Fundamentals",     desc: "Build on-chain confidence — from smart contracts to decentralised applications." },
-              { icon: Star,       title: "AI & Machine Learning Applications", desc: "A practical survey of ML applications across industries — built for non-engineers." },
-            ].map((course) => (
+            {aiCourses.map((course) => (
               <div key={course.title} className="card-service group">
                 <div className="w-12 h-12 rounded-2xl bg-navy-50 flex items-center justify-center flex-shrink-0">
                   <course.icon size={24} className="text-navy-500" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-heading font-bold text-navy-500 text-lg mb-2">{course.title}</h3>
+                  <h3 className="font-heading font-bold text-navy-500 text-lg mb-2">
+                    {course.title}
+                  </h3>
                   <p className="text-brand-muted leading-relaxed text-sm">{course.desc}</p>
                 </div>
                 <Link
-                  href="/local-ed#book-consultation"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold
-                             text-navy-500 group-hover:gap-3 transition-all"
+                  href="#book-consultation"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-500 group-hover:gap-3 transition-all"
                 >
                   Check Eligibility <ChevronRight size={15} />
                 </Link>
               </div>
             ))}
-            {/* Event CTA card */}
             <div className="card-service bg-[#FFD700]/10 border-[#FFD700]/40 group">
               <div className="w-12 h-12 rounded-2xl bg-[#FFD700]/30 flex items-center justify-center flex-shrink-0">
                 <Zap size={24} className="text-navy-500" />
               </div>
               <div className="flex-1">
-                <h3 className="font-heading font-bold text-navy-500 text-lg mb-2">Agentic AI Masterclass</h3>
+                <h3 className="font-heading font-bold text-navy-500 text-lg mb-2">
+                  Agentic AI Masterclass
+                </h3>
                 <p className="text-brand-muted leading-relaxed text-sm">
-                  Live, hands-on event on June 6, 2026. See all five specialist pathways demonstrated in practice. Only £31.
+                  Live, hands-on event on June 6, 2026. See all five specialist pathways
+                  demonstrated in practice. Only £31.
                 </p>
               </div>
               <Link
                 href="/events"
-                className="inline-flex items-center gap-1.5 text-sm font-bold
-                           text-navy-500 group-hover:gap-3 transition-all"
+                className="inline-flex items-center gap-1.5 text-sm font-bold text-navy-500 group-hover:gap-3 transition-all"
               >
                 Book the Event <ChevronRight size={15} />
               </Link>
@@ -473,7 +497,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── 8c. MEET THE TEAM ────────────────────────────────────────────── */}
+      {/* ── 10. TEAM ────────────────────────────────────────────────────── */}
       <section className="section-full section-alt">
         <div className="section">
           <div className="text-center mb-14">
@@ -484,22 +508,7 @@ export default function HomePage() {
             <div className="gold-bar mx-auto" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
-            {[
-              {
-                initial: "S",
-                name: "Shofiqul Haque",
-                title: "Founder, MCKI Solutions",
-                bio: "Shofiqul founded MCKI Solutions after witnessing too many people walk away from genuine opportunities — not because they lacked ability, but because no one took the time to explain their options. With over a decade of hands-on experience in UK higher education, he has personally guided 500+ students into universities and government-funded programmes. His focus in 2026 is expanding MCKI's AI training division to help working professionals future-proof their careers.",
-                event: true,
-              },
-              {
-                initial: "R",
-                name: "Rume Dominic",
-                title: "Agentic AI Engineer & Product Strategist",
-                bio: "Rume is a senior agentic AI engineer and product strategist with deep experience building autonomous agent systems for enterprise clients. Combining technical expertise with a product management background, he specialises in translating cutting-edge AI into practical business value. He co-leads MCKI's Agentic AI Masterclass series and heads the AI curriculum design for the specialist programmes.",
-                event: true,
-              },
-            ].map((person) => (
+            {teamMembers.map((person) => (
               <div
                 key={person.name}
                 className="bg-white rounded-3xl border border-brand-border shadow-card p-8"
@@ -514,78 +523,62 @@ export default function HomePage() {
                   </div>
                 </div>
                 <p className="text-brand-muted text-sm leading-relaxed mb-5">{person.bio}</p>
-                {person.event && (
-                  <Link href="/events" className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-500 hover:gap-3 transition-all">
-                    Speaking at June 6 Event <ChevronRight size={14} />
-                  </Link>
-                )}
+                <Link
+                  href="/events"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-500 hover:gap-3 transition-all"
+                >
+                  Speaking at June 6 Event <ChevronRight size={14} />
+                </Link>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 9. AI NAVIGATOR CTA ─────────────────────────────────────────── */}
-      <section className="section-full bg-white">
+      {/* ── 11. INLINE BOOKING FORM ─────────────────────────────────────── */}
+      <section id="book-consultation" className="section-full bg-white">
         <div className="section">
-          <div className="bg-navy-gradient rounded-3xl p-10 lg:p-16 text-center text-white overflow-hidden relative">
-            <div className="absolute inset-0 opacity-[0.04] dot-grid-sm" />
-            <div className="relative">
-              <p className="section-label text-gold-300 mx-auto">Free Education Advisor</p>
-              <h2 className="font-heading font-bold text-3xl sm:text-4xl mb-4">
-                Not Sure Where to Start?
-              </h2>
-              <p className="text-white/80 text-lg max-w-xl mx-auto mb-8">
-                Tell us a little about yourself — your background, your goals,
-                where you are now. We&apos;ll come back with an honest view on which
-                programmes suit you, what funding you could access, and what to
-                do next.
-              </p>
-              <Link href="/local-ed#navigator" className="btn-primary text-base">
-                Talk to Our Education Advisor <ArrowRight size={18} />
-              </Link>
-              <p className="mt-4 text-white/50 text-xs">
-                Free · No registration required · GDPR compliant
-              </p>
-            </div>
+          <div className="text-center mb-12">
+            <p className="section-label mx-auto">Free Consultation</p>
+            <h2 className="font-heading font-bold text-3xl sm:text-4xl text-navy-500 mb-4">
+              Book Your Free Consultation
+            </h2>
+            <div className="gold-bar mx-auto mb-5" />
+            <p className="section-subheading mx-auto text-center">
+              Tell us what you need. We&apos;ll come back to you within 2 working hours
+              with an honest view on your options and the best next step.
+            </p>
           </div>
+          <HomepageConsultationForm />
+          <p className="text-center text-xs text-brand-muted mt-6">
+            Prefer to call?{" "}
+            <a href={`tel:${BRAND.phone}`} className="text-navy-500 font-semibold underline">
+              {BRAND.phone}
+            </a>
+            {" "}· Or join directly via{" "}
+            <a
+              href="https://meet.google.com/ged-mwoz-grs"
+              className="text-navy-500 font-semibold underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Meet
+            </a>
+          </p>
         </div>
       </section>
 
-      {/* ── 10. FAQ (AEO) ───────────────────────────────────────────────── */}
+      {/* ── 12. FAQ (AEO) ───────────────────────────────────────────────── */}
       <section id="faq" className="section-full bg-brand-alt">
         <div className="section">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
               <p className="section-label mx-auto">FAQ</p>
-              <h2 className="section-heading text-3xl mb-3">
-                Frequently Asked Questions
-              </h2>
+              <h2 className="section-heading text-3xl mb-3">Frequently Asked Questions</h2>
               <div className="gold-bar mx-auto" />
             </div>
             <div className="space-y-4">
-              {[
-                {
-                  q: "What is MCKI Solutions?",
-                  a: "We are a postgraduate education consultancy based in the Midlands. We help UK residents get into university, access Student Finance England funding, and work out the best next step for their career — with a free, no-obligation consultation.",
-                },
-                {
-                  q: "Do I qualify for Student Finance England postgraduate funding?",
-                  a: "More people qualify than you'd think. If you are a UK resident looking to study a postgraduate Master's degree, there is a good chance you are eligible. We check for free and walk you through what you can access.",
-                },
-                {
-                  q: "Is the initial consultation really free?",
-                  a: "Yes — genuinely free. We have a conversation, understand your situation, and give you honest advice. There is no pitch, no pressure, and no obligation to do anything after.",
-                },
-                {
-                  q: "How long does the university admissions process take?",
-                  a: "Most students we work with receive conditional offers within 2–4 weeks. We manage the full application so you are never left wondering what happens next.",
-                },
-                {
-                  q: "I don't have a degree. Can I still apply for a Master's?",
-                  a: "Yes. Many UK universities accept relevant work experience in place of an undergraduate degree. We identify which institutions offer this pathway and find the right fit for your background.",
-                },
-              ].map((faq) => (
+              {faqs.map((faq) => (
                 <div key={faq.q} className="card p-6">
                   <p className="font-semibold text-navy-500 mb-2">{faq.q}</p>
                   <p className="text-brand-muted text-sm leading-relaxed">{faq.a}</p>
