@@ -10,7 +10,8 @@
 
 import { BRAND } from "./constants";
 
-const CRM_RECIPIENTS = [...new Set([BRAND.email, BRAND.crmEmail])];
+const rawRecipients = [BRAND.email, BRAND.crmEmail];
+const CRM_RECIPIENTS = rawRecipients.filter((v, i) => rawRecipients.indexOf(v) === i);
 
 // ── Core sender ────────────────────────────────────────────────────────────
 
