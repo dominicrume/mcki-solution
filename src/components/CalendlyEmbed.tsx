@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Calendar, ExternalLink, Phone } from "lucide-react";
 
-const CALENDLY_URL = "https://calendly.com/adammasum74/30min";
+const CALENDLY_URL = "https://calendly.com/mckisolutions/30min";
 const GOOGLE_MEET = "https://meet.google.com/ged-mwoz-grs";
 
 export function CalendlyEmbed() {

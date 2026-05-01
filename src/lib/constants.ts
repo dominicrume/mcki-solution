@@ -3,7 +3,7 @@ export const BRAND = {
   url: "https://mckisolutions.com",
   phone: "+44 7889 417914",
   email: "Info@mckisolutions.com",
-  crmEmail: "adammasum74@gmail.com",
+  crmEmail: "Info@mckisolutions.com",
   tagline: "Serve with passion. Lead with heart. Achieve with purpose.",
   description:
     "MCKI Solutions is a postgraduate education consultancy based in the Midlands. We help UK residents get into university, access government funding, and take the next step in their careers — with honest, personal guidance from people who care.",
@@ -15,10 +15,11 @@ export const BRAND = {
 } as const;
 
 export const NAV_LINKS = [
-  { label: "Education Funding",    href: "/local-ed",         highlight: false },
-  { label: "International",        href: "/international-ed", highlight: false },
-  { label: "Wealth Lab",           href: "/trading-lab",      highlight: false },
-  { label: "AI Event — June 6",    href: "/events",           highlight: true  },
+  { label: "Local Student Solution",         href: "/local-ed",         highlight: false },
+  { label: "International Student Solution", href: "/international-ed", highlight: false },
+  { label: "Business Solutions",             href: "/business",         highlight: false },
+  { label: "Blog",                           href: "/blog",             highlight: false },
+  { label: "AI Events",                      href: "/events",           highlight: true  },
 ] as const;
 
 export const UNIVERSITY_PARTNERS = [

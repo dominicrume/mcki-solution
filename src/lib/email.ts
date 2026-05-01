@@ -10,7 +10,7 @@
 
 import { BRAND } from "./constants";
 
-const CRM_RECIPIENTS = [BRAND.email, BRAND.crmEmail];
+const CRM_RECIPIENTS = [...new Set([BRAND.email, BRAND.crmEmail])];
 
 // ── Core sender ────────────────────────────────────────────────────────────
 
