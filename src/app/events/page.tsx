@@ -14,12 +14,12 @@ const ReserveSeatButton = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Agentic AI Masterclass — June 6, 2026 | MCKI Solutions",
+  title: "Agentic AI Masterclass — June 27, 2026 | MCKI Solutions",
   description:
-    "Join us for a hands-on Agentic AI Masterclass on June 6, 2026. Learn how AI agents are transforming business, finance, and careers. Only £31 — limited seats.",
+    "Join us for a hands-on Agentic AI Masterclass on June 27, 2026. Learn how AI agents are transforming business, finance, and careers. Only £31 — limited seats.",
   alternates: { canonical: "https://mckisolutions.com/events" },
   openGraph: {
-    title: "Agentic AI Masterclass — June 6, 2026",
+    title: "Agentic AI Masterclass — June 27, 2026",
     description: "Hands-on Agentic AI training event. Only £31. Limited seats.",
     url: "https://mckisolutions.com/events",
   },
@@ -109,7 +109,7 @@ const faqs = [
   },
   {
     q: "Is there a group discount?",
-    a: "Yes — groups of 3 or more get 20% off. Email us at Info@mckisolutions.com with the subject line 'Group Booking — June 6' and we will send you a discount code.",
+    a: "Yes — groups of 3 or more get 20% off. Email us at Info@mckisolutions.com with the subject line 'Group Booking — June 27' and we will send you a discount code.",
   },
 ];
 
@@ -126,7 +126,7 @@ export default function EventsPage() {
             {/* Event badge */}
             <div className="inline-flex items-center gap-2 bg-gold-300/20 border border-gold-300/40 text-gold-300 text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
               <Zap size={13} />
-              Live Event · Midlands · June 6, 2026
+              Live Event · Midlands · June 27, 2026
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6">
               The Agentic AI
@@ -141,7 +141,7 @@ export default function EventsPage() {
             {/* Quick facts strip */}
             <div className="flex flex-wrap gap-5 mb-10 text-sm text-white/70">
               <span className="flex items-center gap-2">
-                <Calendar size={15} className="text-gold-300" /> Saturday, 6 June 2026
+                <Calendar size={15} className="text-gold-300" /> Saturday, 27 June 2026
               </span>
               <span className="flex items-center gap-2">
                 <Clock size={15} className="text-gold-300" /> 1:00 PM — 4:00 PM
@@ -453,7 +453,7 @@ export default function EventsPage() {
       <section className="section-full bg-navy-gradient text-white">
         <div className="section">
           <div className="max-w-2xl mx-auto text-center">
-            <p className="section-label text-gold-300 mx-auto">June 6, 2026</p>
+            <p className="section-label text-gold-300 mx-auto">June 27, 2026</p>
             <h2 className="font-heading font-bold text-3xl sm:text-4xl mb-4">
               50 Seats. £31. One Afternoon That Changes Your Direction.
             </h2>
@@ -464,7 +464,7 @@ export default function EventsPage() {
             </p>
             <ReserveSeatButton label="Reserve My Place — £31" className="btn-primary text-base inline-flex items-center gap-2" />
             <p className="mt-4 text-white/40 text-xs">
-              Group bookings: {BRAND.email} · Subject: &ldquo;Group Booking — June 6&rdquo;
+              Group bookings: {BRAND.email} · Subject: &ldquo;Group Booking — June 27&rdquo;
             </p>
           </div>
         </div>

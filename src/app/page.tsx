@@ -130,7 +130,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-center gap-3 flex-wrap text-center">
           <Zap size={15} className="flex-shrink-0" />
           <span className="text-sm font-bold">
-            Agentic AI Masterclass — Saturday 6 June 2026, Birmingham · Only £31
+            Agentic AI Masterclass — Saturday 27 June 2026, Birmingham · Only £31
           </span>
           <Link
             href="/events"
@@ -477,7 +477,7 @@ export default function HomePage() {
                   Agentic AI Masterclass
                 </h3>
                 <p className="text-brand-muted leading-relaxed text-sm">
-                  Live, hands-on event on June 6, 2026. See all five specialist pathways
+                  Live, hands-on event on June 27, 2026. See all five specialist pathways
                   demonstrated in practice. Only £31.
                 </p>
               </div>
@@ -527,7 +527,7 @@ export default function HomePage() {
                   href="/events"
                   className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-500 hover:gap-3 transition-all"
                 >
-                  Speaking at June 6 Event <ChevronRight size={14} />
+                  Speaking at June 27 Event <ChevronRight size={14} />
                 </Link>
               </div>
             ))}

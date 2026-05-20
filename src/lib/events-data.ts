@@ -31,9 +31,9 @@ export const EVENTS: MCKIEvent[] = [
   {
     id: "ai-masterclass-jun-2026",
     title: "Agentic AI Masterclass",
-    subtitle: "Midlands — June 6, 2026",
-    date: "2026-06-06",
-    displayDate: "6 June 2026",
+    subtitle: "Midlands — June 27, 2026",
+    date: "2026-06-27",
+    displayDate: "27 June 2026",
     time: "1:00 PM – 4:00 PM",
     location: "Revenhurst House, Digbeth, Birmingham B12 0HD + Zoom",
     price: "£31",

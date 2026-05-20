@@ -81,7 +81,7 @@ export function EventSignupForm({ eventName }: Props) {
 
         <div className="bg-gold-50 border border-gold-200 rounded-xl p-3.5 flex items-center gap-3">
           <Calendar size={16} className="text-gold-500 flex-shrink-0" />
-          <p className="text-sm text-navy-500 font-medium">6 June 2026 · 1:00 PM – 4:00 PM · Digbeth, Birmingham</p>
+          <p className="text-sm text-navy-500 font-medium">27 June 2026 · 1:00 PM – 4:00 PM · Digbeth, Birmingham</p>
         </div>
 
         {/* Bank details */}
@@ -109,7 +109,7 @@ export function EventSignupForm({ eventName }: Props) {
       <div className="bg-gold-50 border border-gold-200 rounded-xl p-3.5 flex items-center justify-between">
         <div>
           <p className="text-xs text-gold-600 font-bold uppercase tracking-wide">1-Day Agentic AI Masterclass</p>
-          <p className="text-xs text-brand-muted mt-0.5">6 June 2026 · 1PM–4PM · Birmingham + Zoom</p>
+          <p className="text-xs text-brand-muted mt-0.5">27 June 2026 · 1PM–4PM · Birmingham + Zoom</p>
         </div>
         <p className="text-2xl font-extrabold text-navy-500">£31</p>
       </div>

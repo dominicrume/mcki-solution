@@ -283,7 +283,7 @@ export async function sendEventConfirmation(data: {
     ${para(`Your interest has been recorded for <strong>${data.event}</strong>. We'll send your payment link and event details within <strong>24 hours</strong>.`)}
     ${table(`
       ${highlight("Event", data.event)}
-      ${highlight("Date", "6 June 2026 · 1:00 PM – 4:00 PM")}
+      ${highlight("Date", "27 June 2026 · 1:00 PM – 4:00 PM")}
       ${highlight("Ticket", ticket.label)}
       ${highlight("Investment", ticket.price)}
       ${highlight("Location", "Revenhurst House, Digbeth, Birmingham B12 0HD + Zoom")}
@@ -306,7 +306,7 @@ export async function sendEventConfirmation(data: {
   `;
   await sendEmail({
     to: data.email,
-    subject: `Event registration confirmed — Agentic AI Masterclass · 6 June 2026`,
+    subject: `Event registration confirmed — Agentic AI Masterclass · 27 June 2026`,
     html: layout("Event Registration Confirmed", body),
   });
 }
@@ -334,7 +334,7 @@ export async function sendEventCRM(data: {
   `;
   await sendEmail({
     to: CRM_RECIPIENTS,
-    subject: `[Event] ${data.name} · ${ticket.label} (${ticket.price}) — Agentic AI 6 June 2026`,
+    subject: `[Event] ${data.name} · ${ticket.label} (${ticket.price}) — Agentic AI 27 June 2026`,
     html: layout("New Event Registration", body),
   });
 }

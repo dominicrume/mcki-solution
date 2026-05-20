@@ -118,7 +118,7 @@ export function ReserveSeatButton({
             <p className="text-white/75 text-sm leading-relaxed">
               Transfer <strong className="text-[#FFD700]">{BANK.amount}</strong> using the details below to
               confirm your place at the Agentic AI Masterclass —{" "}
-              <strong>6 June 2026 · 1PM–4PM · Birmingham + Zoom</strong>.
+              <strong>27 June 2026 · 1PM–4PM · Birmingham + Zoom</strong>.
             </p>
           </div>
 
