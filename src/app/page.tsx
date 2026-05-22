@@ -11,7 +11,7 @@ import { BRAND, STATS, UNIVERSITY_PARTNERS } from "@/lib/constants";
 // Lazy-load the client form — keeps the critical SSR path JS-free
 const HomepageConsultationForm = dynamic(
   () => import("@/components/HomepageConsultationForm").then((m) => m.HomepageConsultationForm),
-  { ssr: false }
+  { ssr: false, loading: () => <div className="animate-pulse h-64 bg-brand-alt rounded-2xl border border-brand-border" /> }
 );
 
 export const metadata: Metadata = {

@@ -133,7 +133,7 @@ export function Footer() {
               {BRAND.email}
             </a>
             <a
-              href={`https://${BRAND.url}`}
+              href={BRAND.url}
               className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
             >
               <Globe size={14} className="flex-shrink-0" />

@@ -7,8 +7,8 @@ import {
 } from "lucide-react";
 
 // Heavy client components — lazy-loaded so they don't block initial page paint
-const AINavigator  = dynamic(() => import("@/components/AINavigator").then((m) => m.AINavigator),   { ssr: false });
-const CalendlyEmbed = dynamic(() => import("@/components/CalendlyEmbed").then((m) => m.CalendlyEmbed), { ssr: false });
+const AINavigator  = dynamic(() => import("@/components/AINavigator").then((m) => m.AINavigator),   { ssr: false, loading: () => <div className="animate-pulse h-48 bg-brand-alt rounded-2xl border border-brand-border" /> });
+const CalendlyEmbed = dynamic(() => import("@/components/CalendlyEmbed").then((m) => m.CalendlyEmbed), { ssr: false, loading: () => <div className="animate-pulse h-[700px] bg-brand-alt rounded-2xl border border-brand-border" /> });
 
 export const metadata: Metadata = {
   title: "UK University Courses & Student Funding — MCKI Solutions",

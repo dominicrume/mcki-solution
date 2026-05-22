@@ -38,7 +38,7 @@ export const STATS = [
   { value: "35+",     label: "University Partners" },
   { value: "98%",     label: "Satisfaction Rate" },
   { value: "Free",    label: "Initial Consultation" },
-  { value: "Jun 6",   label: "Agentic AI Event 2026" },
+  { value: "Jun 27",  label: "Agentic AI Event 2026" },
 ] as const;
 
 export const FAQ_SCHEMA = {

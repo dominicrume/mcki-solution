@@ -94,9 +94,9 @@ export function EventSignupForm({ eventName }: Props) {
           <BankRow label="Sort Code" val="30-98-97" field="sort" />
           <BankRow label="Account Number" val="47910663" field="acc" />
           <BankRow label="Bank" val="Lloyds Bank" field="bank" />
-          <BankRow label="Reference" val="JUNE6-EVENT" field="ref" />
+          <BankRow label="Reference" val="JUNE27-EVENT" field="ref" />
           <p className="text-xs text-amber-700 bg-amber-50 rounded-lg p-2.5 mt-3">
-            📌 Use <strong>JUNE6-EVENT</strong> as your reference. Confirmation email arrives within 2 hours of payment.
+            📌 Use <strong>JUNE27-EVENT</strong> as your reference. Confirmation email arrives within 2 hours of payment.
           </p>
         </div>
       </div>

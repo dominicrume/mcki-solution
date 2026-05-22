@@ -9,7 +9,7 @@ const BANK = {
   sortCode:      "30-98-97",
   accountNumber: "47910663",
   bank:          "Lloyds Bank",
-  ref:           "JUNE6-EVENT",
+  ref:           "JUNE27-EVENT",
   amount:        "£31",
 };
 
