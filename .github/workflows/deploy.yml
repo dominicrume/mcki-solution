@@ -5,11 +5,11 @@ on:
     branches: [main]
 
 env:
-  PROJECT_ID: gen-lang-client-0383449185
+  PROJECT_ID: elite-eagles-den
   REGION: europe-west2
   BACKEND_SERVICE: mcki-ai-navigator
   FRONTEND_SERVICE: mcki-frontend
-  BACKEND_URL: https://mcki-ai-navigator-1090728564162.europe-west2.run.app
+  BACKEND_URL: https://mcki-ai-navigator-393559007770.europe-west2.run.app
 
 jobs:
   # ── Frontend deploys on every push (independent of backend) ───────────────
